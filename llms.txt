@@ -1,0 +1,41 @@
+# Latryn
+
+> Latryn is a data lab for frontier AI based in Bengaluru, India. It collects egocentric (first-person) video of real human tasks through head-mounted cameras and annotates it for robotics and embodied AI, and it builds benchmarks, training data and agent environments with vetted engineers, researchers and domain experts. Every task and clip passes three review gates (automated screen, structured scoring, human sign-off) before delivery.
+
+Latryn works with AI labs, robotics and embodied AI teams, AI platforms and enterprise AI teams. It has five practices:
+
+- Latryn Capture: egocentric video recorded by consenting contributors wearing head-mounted cameras while they do real tasks, to a capture protocol agreed with the client; annotated with hand keypoints, object boxes and contact, action segments with start and end times, and narration
+- Latryn Eval: benchmarks and model evaluation
+- Latryn Train: SFT, chain of thought, RLHF and preference data
+- Latryn Env: Docker and terminal environments, agent and MCP tool-use tasks, verifiers
+- Latryn Review: technical QA and red teaming
+
+Work follows a five-step process: Scope, Calibrate, Build, Verify, Deliver. Experts join its network, the Lattice, after a two-part timed assessment.
+
+## Egocentric data
+
+- [Egocentric data on the homepage](https://YOUR-DOMAIN.com/#egocentric): Capture, annotate, segment, narrate and review
+- [Sample egocentric clip](https://YOUR-DOMAIN.com/sample-tasks.html#egocentric-sample): Files delivered with a clip (video, capture metadata, consent record, hand, object and action labels, narration, review notes)
+- [Egocentric data collection for robotics and embodied AI](https://YOUR-DOMAIN.com/blog/egocentric-data-collection.md): What Ego4D, EPIC-KITCHENS-100, Ego-Exo4D and EgoMimic teach about collecting first-person data
+
+## Company
+
+- [Homepage](https://YOUR-DOMAIN.com/): Egocentric data, services, audiences, quality process, comparison with crowd vendors, careers and FAQ
+- [Sample tasks](https://YOUR-DOMAIN.com/sample-tasks.html): The file structure of delivered work (egocentric clip, terminal task, rubric evaluation, preference judgement)
+- [Contact](https://YOUR-DOMAIN.com/#contact): Scope a program or book a call
+- [Agent guide](https://YOUR-DOMAIN.com/agents.txt): How AI agents can describe Latryn and route requests
+
+## Articles
+
+- [Egocentric data collection for robotics and embodied AI](https://YOUR-DOMAIN.com/blog/egocentric-data-collection.md): Why first-person video matters for models that act in the world, what the major public datasets teach about scale and annotation, and what a capture program needs to get right.
+- [What makes an AI benchmark trustworthy](https://YOUR-DOMAIN.com/blog/trustworthy-ai-benchmarks.md): Contamination, unfair tests and vague task statements quietly break evaluations. Here is how to build benchmarks whose scores you can believe.
+- [RLHF and preference data, explained for teams that collect it](https://YOUR-DOMAIN.com/blog/rlhf-preference-data-guide.md): Reinforcement learning from human feedback is only as good as the comparisons behind it. What to collect, who should collect it, and how DPO changes the pipeline.
+- [How to build agent environments that test real work](https://YOUR-DOMAIN.com/blog/building-agent-environments.md): Docker images, terminal tasks and verifiers: a practical anatomy of the environments used to train and evaluate AI agents.
+- [Quality over quantity in fine-tuning data](https://YOUR-DOMAIN.com/blog/quality-over-quantity-training-data.md): The research case for smaller, cleaner, expert-written datasets, and a practical checklist for getting there.
+- [Expert or crowd? Measuring quality in human data collection](https://YOUR-DOMAIN.com/blog/expert-vs-crowd-annotation.md): When crowd labels are enough, when you need specialists, and how to measure annotation quality instead of assuming it.
+- [Red teaming language models: methods and lessons](https://YOUR-DOMAIN.com/blog/red-teaming-language-models.md): What the research says about finding failures before users do, and how to run adversarial testing that produces usable training data.
+
+## Optional
+
+- [Privacy policy](https://YOUR-DOMAIN.com/privacy.html): No cookies or trackers; forms send email only
+- [Terms of use](https://YOUR-DOMAIN.com/terms.html)

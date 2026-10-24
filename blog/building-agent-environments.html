@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to build agent environments that test real work | Latryn</title>
+<meta name="description" content="Docker images, terminal tasks and verifiers: a practical anatomy of the environments used to train and evaluate AI agents.">
+<link rel="canonical" href="https://YOUR-DOMAIN.com/blog/building-agent-environments.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Latryn">
+<meta property="og:title" content="How to build agent environments that test real work | Latryn">
+<meta property="og:description" content="Docker images, terminal tasks and verifiers: a practical anatomy of the environments used to train and evaluate AI agents.">
+<meta property="og:url" content="https://YOUR-DOMAIN.com/blog/building-agent-environments.html">
+<meta property="og:image" content="https://YOUR-DOMAIN.com/og-image-1200x630.png">
+<meta name="twitter:card" content="summary_large_image">
+<script>document.documentElement.classList.add("js")</script>
+<meta name="theme-color" content="#f5f2ec">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="alternate" type="text/plain" title="LLM site guide" href="../llms.txt">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Schibsted+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/vendor/lenis.css">
+<link rel="stylesheet" href="../assets/latryn.css">
+<meta name="keywords" content="AI agent environments, agent benchmark, Docker evaluation environment, terminal tasks, verifier, SWE-bench, AgentBench, Terminal-Bench"><meta property="article:published_time" content="2026-10-24"><link rel="alternate" type="text/markdown" href="building-agent-environments.md"><script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "How to build agent environments that test real work", "description": "Docker images, terminal tasks and verifiers: a practical anatomy of the environments used to train and evaluate AI agents.", "datePublished": "2026-10-24", "dateModified": "2026-10-24", "author": {"@type": "Organization", "name": "Latryn Research Team"}, "publisher": {"@type": "Organization", "name": "Latryn", "url": "https://YOUR-DOMAIN.com/", "logo": "https://YOUR-DOMAIN.com/favicon.svg"}, "mainEntityOfPage": "https://YOUR-DOMAIN.com/blog/building-agent-environments.html", "image": "https://YOUR-DOMAIN.com/og-image-1200x630.png", "keywords": "AI agent environments, agent benchmark, Docker evaluation environment, terminal tasks, verifier, SWE-bench, AgentBench, Terminal-Bench", "articleSection": "Agent environments", "wordCount": 670, "abstract": "An agent environment has four parts: a brief, a reproducible container, a reference solution and a verifier. Agents fail on long, multi-step work, so environments should test sequences of actions, not single answers. Reproducibility is a quality issue: environments that build differently produce failures unrelated to the agent. The verifier decides what the benchmark measures, so it deserves the most review.", "citation": [{"@type": "ScholarlyArticle", "name": "Liu, X., et al. (2023). AgentBench: Evaluating LLMs as Agents. ICLR 2024.", "url": "https://arxiv.org/abs/2308.03688"}, {"@type": "ScholarlyArticle", "name": "Jimenez, C. E., et al. (2023). SWE-bench: Can Language Models Resolve Real-World GitHub Issues? ICLR 2024.", "url": "https://arxiv.org/abs/2310.06770"}, {"@type": "ScholarlyArticle", "name": "Merrill, M. A., et al. (2026). Terminal-Bench: Benchmarking Agents on Hard, Realistic Tasks in Command Line Interfaces.", "url": "https://arxiv.org/abs/2601.11868"}, {"@type": "ScholarlyArticle", "name": "OpenAI (2024). Introducing SWE-bench Verified.", "url": "https://openai.com/index/introducing-swe-bench-verified/"}]}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://YOUR-DOMAIN.com/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://YOUR-DOMAIN.com/blog/"}, {"@type": "ListItem", "position": 3, "name": "How to build agent environments that test real work", "item": "https://YOUR-DOMAIN.com/blog/building-agent-environments.html"}]}</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="progress" aria-hidden="true"></div><header class="nav" id="nav"><nav class="nav-in" aria-label="Main">
+<a href="../index.html" class="logo" aria-label="Latryn home"><svg viewBox="0 0 292 94" width="87" height="28" aria-hidden="true"><g transform="translate(1 -8.0) scale(0.1)"><path transform="translate(0 800.0) scale(1 -1)" d="M54 0V726H207V0Z" fill="currentColor"/><path transform="translate(241 800.0) scale(1 -1)" d="M257 -10Q190 -10 137.25 23.0Q84.5 56 54.25 113.0Q24 170 24 242.5Q24 315.5 54.25 372.75Q84.5 430 137.25 463.0Q190 496 257 496Q306 496 345.5 477.0Q385 458 409.75 424.5Q434.5 391 438 348V138Q434.5 95 410.0 61.5Q385.5 28 345.75 9.0Q306 -10 257 -10ZM288 128Q337 128 367.0 160.25Q397 192.5 397 243Q397 277 383.5 302.75Q370 328.5 345.5 343.25Q321 358 288.5 358Q256.5 358 232.0 343.25Q207.5 328.5 193.25 302.5Q179 276.5 179 243Q179 209.5 193.0 183.5Q207 157.5 231.75 142.75Q256.5 128 288 128ZM390.5 0V130.5L413.5 249L390.5 366.5V486H541V0Z" fill="currentColor"/><path transform="translate(816 800.0) scale(1 -1)" d="M123 0V687H276V0ZM13 356V486H386V356Z" fill="currentColor"/><path transform="translate(1195 800.0) scale(1 -1)" d="M54 0V486H207V0ZM207 266.5 142.5 316.5Q161.5 402 206.99693251533742 449.0Q252.49386503067484 496 331.5 496Q366.5 496 393.25 485.5Q420 475 440 453L349 338Q339 349 324.19444444444446 354.75Q309.3888888888889 360.5 290 360.5Q252 360.5 229.5 337.125786163522Q207 313.751572327044 207 266.5Z" fill="currentColor"/><path transform="translate(1619 800.0) scale(1 -1)" d="M203.5 -2.5 4 486H168.5L295.5 98.5H235L365 486H529.5L321.5 -2.5ZM78.5 -205 224.5 110 321.5 -2.5 235.5 -205Z" fill="currentColor"/><path transform="translate(2133 800.0) scale(1 -1)" d="M375 0V276.5Q375 315 351.5 338.25Q328 361.5 291.6224489795918 361.5Q266.8724489795918 361.5 247.6862244897959 351.0Q228.5 340.5 217.75 321.25Q207 302 207 276.5L147.5 305.5Q147.5 363 172.75 405.75Q198 448.5 242.44796954314722 472.25Q286.89593908629445 496 343.1979695431472 496Q396.5 496 438.25 470.5Q480 445 504.0 403.0Q528 361 528 311V0ZM54 0V486H207V0Z" fill="currentColor"/><rect x="2750" y="647.0" width="153" height="153" class="ldot"/></g></svg></a>
+<div class="nav-links"><a href="../index.html#egocentric">Egocentric</a><a href="../index.html#build">Services</a><a href="../index.html#quality">Quality</a><a href="../sample-tasks.html">Sample tasks</a><a href="../blog/index.html" aria-current="page">Blog</a><a href="../index.html#lattice">Careers</a></div>
+<a class="btn btn-ink" href="../index.html?type=Scope%20a%20program#contact" style="min-height:44px;padding:11px 18px;font-size:15px">Scope a program <span class="sq" aria-hidden="true"></span></a>
+</nav></header>
+<main id="main">
+<article class="narrow">
+<header class="article-head rv">
+<div class="crumbs"><a href="../index.html">Home</a> / <a href="index.html">Blog</a> / Agent environments</div>
+<h1 style="view-transition-name:t-building-agent-environments">How to build agent environments that test real work<span class="dot"></span></h1>
+<p class="dek">Docker images, terminal tasks and verifiers: a practical anatomy of the environments used to train and evaluate AI agents.</p>
+<div class="byline"><span>Latryn Research Team</span><span><time datetime="2026-10-24">24 Oct 2026</time></span><span>8 min read</span><span>4 cited sources</span></div>
+</header>
+<aside class="tldr rv" aria-label="Key takeaways"><h2>Key takeaways</h2><ul><li>An agent environment has four parts: a brief, a reproducible container, a reference solution and a verifier.</li><li>Agents fail on long, multi-step work, so environments should test sequences of actions, not single answers.</li><li>Reproducibility is a quality issue: environments that build differently produce failures unrelated to the agent.</li><li>The verifier decides what the benchmark measures, so it deserves the most review.</li></ul></aside>
+<div class="prose"><p>A chat benchmark asks a model for an answer. An agent environment asks it to do something: run commands, edit files, call tools and check its own work. That shift changes what good evaluation and training data looks like.</p>
+<h2>Why agents need environments, not prompts</h2>
+<p>AgentBench, published in 2023, evaluated language models as agents across eight distinct environments, from operating systems and databases to web tasks <sup><a href="#ref-1" aria-label="Reference 1">[1]</a></sup>. The authors found that top commercial models performed well, while many open models of 70B parameters or fewer fell well behind, and identified weak long-horizon reasoning, decision-making and instruction following as the main obstacles <sup><a href="#ref-1" aria-label="Reference 1">[1]</a></sup>. Those are exactly the skills a single-turn prompt cannot test.</p>
+<p>SWE-bench made the same point for software engineering by asking models to resolve real GitHub issues inside real repositories. When it launched, the best model resolved only 1.96% of the 2,294 issues <sup><a href="#ref-2" aria-label="Reference 2">[2]</a></sup>. Terminal-Bench 2.0 extends the idea to 89 hard command-line tasks, each with its own environment and tests, where frontier systems still score below 65% <sup><a href="#ref-3" aria-label="Reference 3">[3]</a></sup>.</p>
+<h2>Anatomy of a good environment</h2>
+<pre><code>task-0417/
+  instruction.md        goal, inputs, acceptance criteria
+  task.toml             language, domain, difficulty, time limit
+  environment/
+    Dockerfile          pinned base image and dependencies
+  fixtures/             input files the agent must handle
+  solution/
+    solve.sh            human-written reference solution
+  tests/
+    verifier.py         checks the end state, not the steps
+  review/
+    notes.md            who reviewed it and what changed
+</code></pre>
+<h3>1. The brief</h3>
+<p>The instruction states the goal and the acceptance criteria in plain language. It does not hint at the solution, and it does not hide requirements in the tests.</p>
+<h3>2. The container</h3>
+<p>Pin everything: base image digest, package versions, data files. An environment that builds differently on Tuesday produces failures that have nothing to do with the agent. OpenAI listed hard-to-set-up development environments as one of the reasons it re-annotated SWE-bench <sup><a href="#ref-4" aria-label="Reference 4">[4]</a></sup>.</p>
+<h3>3. The reference solution</h3>
+<p>A human writes and runs a full solution inside the container. If the author cannot solve it reliably in the environment provided, neither can the agent, and the task is broken.</p>
+<h3>4. The verifier</h3>
+<p>The verifier checks the final state of the system: files, outputs, service behaviour. It should accept any valid approach and fail known wrong ones. Because it defines what success means, it gets the most scrutiny at review.</p>
+<h2>Designing tasks that agents actually fail</h2>
+<p>Hard tasks are not obscure tasks. The most useful ones come from real workflows and require several dependent steps:</p>
+<ul>
+<li>Diagnosing a failing build, fixing it and proving the fix with tests.</li>
+<li>Migrating data between formats while preserving edge cases.</li>
+<li>Configuring a service so another program can use it.</li>
+<li>Recovering from a partially broken state left by a previous step.</li>
+</ul>
+<p>Each step should be checkable, and failure partway through should be visible in the end state.</p>
+<h2>Review before release</h2>
+<p>Before any environment ships, a second engineer rebuilds it from scratch, solves it from the brief, runs the verifier against the reference solution and an alternative solution, and tries at least one plausible wrong answer. Anything that fails goes back to the author with notes.</p>
+<p>Browse our <a href="../sample-tasks.html">sample tasks</a> to see this structure, or read <a href="trustworthy-ai-benchmarks.html">what makes a benchmark trustworthy</a>.</p></div>
+<section class="cta-box rv" aria-label="Work with Latryn">
+<h2>Need data built to this standard?</h2>
+<p>Tell us the benchmark, task format or dataset you need. We agree scope and acceptance checks before any work starts.</p>
+<div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn btn-paper" href="../index.html?type=Scope%20a%20program#contact">Scope a program <span class="arr" aria-hidden="true">→</span></a><a class="btn" style="color:var(--raised);border-color:var(--tint)" href="../sample-tasks.html">See sample tasks</a></div>
+</section>
+<section class="refs prose" id="references" aria-label="References"><h2>References</h2><ol>
+<li><span id="ref-1"></span>Liu, X., et al. (2023). <em>AgentBench: Evaluating LLMs as Agents.</em> ICLR 2024. <a rel="noopener" target="_blank" href="https://arxiv.org/abs/2308.03688">arXiv:2308.03688</a></li>
+<li><span id="ref-2"></span>Jimenez, C. E., et al. (2023). <em>SWE-bench: Can Language Models Resolve Real-World GitHub Issues?</em> ICLR 2024. <a rel="noopener" target="_blank" href="https://arxiv.org/abs/2310.06770">arXiv:2310.06770</a></li>
+<li><span id="ref-3"></span>Merrill, M. A., et al. (2026). <em>Terminal-Bench: Benchmarking Agents on Hard, Realistic Tasks in Command Line Interfaces.</em> <a rel="noopener" target="_blank" href="https://arxiv.org/abs/2601.11868">arXiv:2601.11868</a></li>
+<li><span id="ref-4"></span>OpenAI (2024). <em>Introducing SWE-bench Verified.</em> <a rel="noopener" target="_blank" href="https://openai.com/index/introducing-swe-bench-verified/">openai.com</a></li>
+</ol></section>
+</article>
+<section class="wrap related"><h2>Keep reading<span class="dot"></span></h2><div class="posts stagger" style="padding-bottom:0"><a class="post-card " href="egocentric-data-collection.html"><span class="corner" aria-hidden="true"></span><span class="eyebrow">Egocentric data</span><h2 style="view-transition-name:t-egocentric-data-collection">Egocentric data collection for robotics and embodied AI</h2><p>Why first-person video matters for models that act in the world, what the major public datasets teach about scale and annotation, and what a capture program needs to get right.</p><span class="meta">9 min read · 4 sources</span></a><a class="post-card " href="trustworthy-ai-benchmarks.html"><span class="corner" aria-hidden="true"></span><span class="eyebrow">Evaluation</span><h2 style="view-transition-name:t-trustworthy-ai-benchmarks">What makes an AI benchmark trustworthy</h2><p>Contamination, unfair tests and vague task statements quietly break evaluations. Here is how to build benchmarks whose scores you can believe.</p><span class="meta">8 min read · 5 sources</span></a><a class="post-card " href="rlhf-preference-data-guide.html"><span class="corner" aria-hidden="true"></span><span class="eyebrow">Training data</span><h2 style="view-transition-name:t-rlhf-preference-data-guide">RLHF and preference data, explained for teams that collect it</h2><p>Reinforcement learning from human feedback is only as good as the comparisons behind it. What to collect, who should collect it, and how DPO changes the pipeline.</p><span class="meta">9 min read · 4 sources</span></a></div></section>
+</main><footer><div class="wrap">
+<div class="fgrid">
+<p style="margin:0;font-family:var(--disp);font-size:22px;line-height:1.35;color:var(--paper);max-width:340px">Egocentric and expert-built data for frontier AI.</p>
+<div class="fcols">
+<div><span class="h">PRACTICES</span><a href="../index.html#build">Latryn Eval</a><a href="../index.html#build">Latryn Train</a><a href="../index.html#build">Latryn Env</a><a href="../index.html#egocentric">Latryn Capture</a><a href="../index.html#build">Latryn Review</a></div>
+<div><span class="h">BLOG</span><a href="../blog/egocentric-data-collection.html">Egocentric data collection</a><a href="../blog/trustworthy-ai-benchmarks.html">What makes an AI benchmark trustworthy</a><a href="../blog/rlhf-preference-data-guide.html">RLHF and preference data, explained for teams that collect it</a><a href="../blog/building-agent-environments.html">How to build agent environments that test real work</a><a href="../blog/index.html">All articles</a></div>
+<div><span class="h">COMPANY</span><a href="../index.html#quality">Quality process</a><a href="../sample-tasks.html">Sample tasks</a><a href="../index.html#lattice">Careers</a><a href="../index.html#contact">Contact</a></div>
+<div><span class="h">SOCIAL</span><a data-social="linkedin" href="#">LinkedIn</a><a data-social="x" href="#">X</a><a data-social="youtube" href="#">YouTube</a><a data-email="general" href="#"></a></div>
+</div></div>
+<div class="legal"><span>© 2026 Latryn · Bengaluru, India</span><span style="display:flex;gap:20px"><a href="../privacy.html">Privacy</a><a href="../terms.html">Terms</a></span></div>
+</div></footer>
+<script src="../assets/vendor/lenis.min.js"></script>
+<script src="../assets/site.js"></script>
+</body>
+</html>
