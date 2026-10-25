@@ -2,7 +2,7 @@
 
 > What the research says about finding failures before users do, and how to run adversarial testing that produces usable training data.
 
-Published 2026-10-24 by the Latryn Research Team. Canonical: https://YOUR-DOMAIN.com/blog/red-teaming-language-models.html
+Published 2026-10-24 by the Latryn Research Team. Canonical: https://latryn.com/blog/red-teaming-language-models.html
 
 ## Key takeaways
 

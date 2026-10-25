@@ -20,6 +20,6 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
-Sitemap: https://YOUR-DOMAIN.com/sitemap.xml
-# Site guide for language models: https://YOUR-DOMAIN.com/llms.txt
-# Guide for AI agents acting for a user: https://YOUR-DOMAIN.com/agents.txt
+Sitemap: https://latryn.com/sitemap.xml
+# Site guide for language models: https://latryn.com/llms.txt
+# Guide for AI agents acting for a user: https://latryn.com/agents.txt

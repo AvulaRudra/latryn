@@ -4,7 +4,7 @@
 
 > Why first-person video matters for models that act in the world, what the major public datasets teach about scale and annotation, and what a capture program needs to get right.
 
-Published 2026-10-24 by the Latryn Research Team. Canonical: https://YOUR-DOMAIN.com/blog/egocentric-data-collection.html
+Published 2026-10-24 by the Latryn Research Team. Canonical: https://latryn.com/blog/egocentric-data-collection.html
 
 ## Key takeaways
 
@@ -64,7 +64,7 @@ See [the structure of a sample egocentric clip](../sample-tasks.html#egocentric-
 
 > Contamination, unfair tests and vague task statements quietly break evaluations. Here is how to build benchmarks whose scores you can believe.
 
-Published 2026-10-24 by the Latryn Research Team. Canonical: https://YOUR-DOMAIN.com/blog/trustworthy-ai-benchmarks.html
+Published 2026-10-24 by the Latryn Research Team. Canonical: https://latryn.com/blog/trustworthy-ai-benchmarks.html
 
 ## Key takeaways
 
@@ -146,7 +146,7 @@ If you are building or auditing an evaluation set, our [quality process](../inde
 
 > Reinforcement learning from human feedback is only as good as the comparisons behind it. What to collect, who should collect it, and how DPO changes the pipeline.
 
-Published 2026-10-24 by the Latryn Research Team. Canonical: https://YOUR-DOMAIN.com/blog/rlhf-preference-data-guide.html
+Published 2026-10-24 by the Latryn Research Team. Canonical: https://latryn.com/blog/rlhf-preference-data-guide.html
 
 ## Key takeaways
 
@@ -220,7 +220,7 @@ Read more about [how we vet experts](expert-vs-crowd-annotation.html), or see ho
 
 > Docker images, terminal tasks and verifiers: a practical anatomy of the environments used to train and evaluate AI agents.
 
-Published 2026-10-24 by the Latryn Research Team. Canonical: https://YOUR-DOMAIN.com/blog/building-agent-environments.html
+Published 2026-10-24 by the Latryn Research Team. Canonical: https://latryn.com/blog/building-agent-environments.html
 
 ## Key takeaways
 
@@ -297,7 +297,7 @@ Browse our [sample tasks](../sample-tasks.html) to see this structure, or read [
 
 > The research case for smaller, cleaner, expert-written datasets, and a practical checklist for getting there.
 
-Published 2026-10-24 by the Latryn Research Team. Canonical: https://YOUR-DOMAIN.com/blog/quality-over-quantity-training-data.html
+Published 2026-10-24 by the Latryn Research Team. Canonical: https://latryn.com/blog/quality-over-quantity-training-data.html
 
 ## Key takeaways
 
@@ -361,7 +361,7 @@ See how our [Train practice](../index.html#build) handles SFT and chain-of-thoug
 
 > When crowd labels are enough, when you need specialists, and how to measure annotation quality instead of assuming it.
 
-Published 2026-10-24 by the Latryn Research Team. Canonical: https://YOUR-DOMAIN.com/blog/expert-vs-crowd-annotation.html
+Published 2026-10-24 by the Latryn Research Team. Canonical: https://latryn.com/blog/expert-vs-crowd-annotation.html
 
 ## Key takeaways
 
@@ -424,7 +424,7 @@ Read more about [quality over quantity in training data](quality-over-quantity-t
 
 > What the research says about finding failures before users do, and how to run adversarial testing that produces usable training data.
 
-Published 2026-10-24 by the Latryn Research Team. Canonical: https://YOUR-DOMAIN.com/blog/red-teaming-language-models.html
+Published 2026-10-24 by the Latryn Research Team. Canonical: https://latryn.com/blog/red-teaming-language-models.html
 
 ## Key takeaways
 

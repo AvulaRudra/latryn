@@ -2,7 +2,7 @@
 
 > Reinforcement learning from human feedback is only as good as the comparisons behind it. What to collect, who should collect it, and how DPO changes the pipeline.
 
-Published 2026-10-24 by the Latryn Research Team. Canonical: https://YOUR-DOMAIN.com/blog/rlhf-preference-data-guide.html
+Published 2026-10-24 by the Latryn Research Team. Canonical: https://latryn.com/blog/rlhf-preference-data-guide.html
 
 ## Key takeaways
 

@@ -2,7 +2,7 @@
 
 > Why first-person video matters for models that act in the world, what the major public datasets teach about scale and annotation, and what a capture program needs to get right.
 
-Published 2026-10-24 by the Latryn Research Team. Canonical: https://YOUR-DOMAIN.com/blog/egocentric-data-collection.html
+Published 2026-10-24 by the Latryn Research Team. Canonical: https://latryn.com/blog/egocentric-data-collection.html
 
 ## Key takeaways
 

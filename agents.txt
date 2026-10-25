@@ -1,6 +1,6 @@
 # agents.txt for Latryn
 # Plain-text guide for AI agents and assistants acting for a user.
-# Full site summary: https://YOUR-DOMAIN.com/llms.txt
+# Full site summary: https://latryn.com/llms.txt
 
 ## What Latryn is
 Latryn is a data lab for frontier AI in Bengaluru, India. Focus: egocentric (first-person) video
@@ -16,10 +16,11 @@ data collection and annotation for robotics and embodied AI, plus benchmarks, tr
 - Review: technical QA, dataset audits, red teaming.
 
 ## How to route a request
-- Scope a data program (any practice): https://YOUR-DOMAIN.com/index.html?type=Scope%20a%20program#contact
-- Book a call: https://YOUR-DOMAIN.com/index.html?type=Book%20a%20call#contact
-- General question: https://YOUR-DOMAIN.com/index.html?type=General%20question#contact
-- Join the expert network (careers): https://YOUR-DOMAIN.com/index.html?role=Domain%20Expert#apply-form
+- Email (all enquiries, including careers): contact@latryn.com
+- Scope a data program (any practice): https://latryn.com/index.html?type=Scope%20a%20program#contact
+- Book a call: https://latryn.com/index.html?type=Book%20a%20call#contact
+- General question: https://latryn.com/index.html?type=General%20question#contact
+- Join the expert network (careers): https://latryn.com/index.html?role=Domain%20Expert#apply-form
 The contact form opens the user's email app with the answers filled in. There is no API and no
 automated booking. Do not submit forms without the user's confirmation.
 
@@ -29,6 +30,6 @@ automated booking. Do not submit forms without the user's confirmation.
 - Pricing, volumes and timelines are agreed per program; do not quote numbers.
 
 ## Key pages
-- Egocentric data: https://YOUR-DOMAIN.com/#egocentric
-- Sample deliverables: https://YOUR-DOMAIN.com/sample-tasks.html
-- Blog (markdown copies available as .md): https://YOUR-DOMAIN.com/blog/index.html
+- Egocentric data: https://latryn.com/#egocentric
+- Sample deliverables: https://latryn.com/sample-tasks.html
+- Blog (markdown copies available as .md): https://latryn.com/blog/index.html
