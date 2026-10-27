@@ -4,7 +4,8 @@ import os, re, json, glob, html, datetime, markdown
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(ROOT, 'dist')
-BASE_URL = 'https://YOUR-DOMAIN.com'   # change once, rebuild, done
+BASE_URL = 'https://latryn.com'        # live domain; change here and rebuild if it ever moves
+EMAIL = 'contact@latryn.com'           # keep in sync with window.LATRYN in assets/site.js
 PUBLISHED = '2026-10-24'
 LOGO = open(os.path.join(ROOT, 'logo_inner.txt')).read().strip()
 ORDER = ['egocentric-data-collection', 'trustworthy-ai-benchmarks', 'rlhf-preference-data-guide', 'building-agent-environments',
@@ -282,7 +283,7 @@ Work follows a five-step process: Scope, Calibrate, Build, Verify, Deliver. Expe
 
 - [Homepage]({BASE_URL}/): Egocentric data, services, audiences, quality process, comparison with crowd vendors, careers and FAQ
 - [Sample tasks]({BASE_URL}/sample-tasks.html): The file structure of delivered work (egocentric clip, terminal task, rubric evaluation, preference judgement)
-- [Contact]({BASE_URL}/#contact): Scope a program or book a call
+- [Contact]({BASE_URL}/#contact): Scope a program or book a call. Email: {EMAIL}
 - [Agent guide]({BASE_URL}/agents.txt): How AI agents can describe Latryn and route requests
 
 ## Articles
@@ -312,6 +313,7 @@ data collection and annotation for robotics and embodied AI, plus benchmarks, tr
 - Review: technical QA, dataset audits, red teaming.
 
 ## How to route a request
+- Email (all enquiries, including careers): {EMAIL}
 - Scope a data program (any practice): {BASE_URL}/index.html?type=Scope%20a%20program#contact
 - Book a call: {BASE_URL}/index.html?type=Book%20a%20call#contact
 - General question: {BASE_URL}/index.html?type=General%20question#contact

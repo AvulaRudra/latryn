@@ -5,8 +5,8 @@
  * (social links hide, "Book a call" opens the contact form instead).
  */
 window.LATRYN = {
-  email: "hello@YOUR-DOMAIN.com",        // receives "Scope a program", "Book a call" and general enquiries
-  careersEmail: "careers@YOUR-DOMAIN.com", // receives "Join the Lattice" applications
+  email: "contact@latryn.com",            // receives "Scope a program", "Book a call" and general enquiries
+  careersEmail: "contact@latryn.com",     // receives "Join the Lattice" applications
   bookingUrl: "",                          // e.g. a Cal.com or Calendly link; empty = use the contact form
   social: {
     linkedin: "",                          // e.g. https://www.linkedin.com/company/latryn

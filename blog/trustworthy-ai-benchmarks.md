@@ -2,7 +2,7 @@
 
 > Contamination, unfair tests and vague task statements quietly break evaluations. Here is how to build benchmarks whose scores you can believe.
 
-Published 2026-10-24 by the Latryn Research Team. Canonical: https://YOUR-DOMAIN.com/blog/trustworthy-ai-benchmarks.html
+Published 2026-10-24 by the Latryn Research Team. Canonical: https://latryn.com/blog/trustworthy-ai-benchmarks.html
 
 ## Key takeaways
 

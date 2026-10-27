@@ -32,7 +32,7 @@ python3 build.py          # writes everything to dist/
 python3 -m http.server -d dist 8000
 ```
 
-Before going live, set `BASE_URL` in `build_pages.py` (currently `https://YOUR-DOMAIN.com`) and rebuild. It feeds canonical tags, Open Graph, JSON-LD, `sitemap.xml`, `robots.txt` and `llms.txt`.
+The site is live at `https://latryn.com`. `BASE_URL` in `build_pages.py` holds it; if the domain changes, edit it there and rebuild. It feeds canonical tags, Open Graph, JSON-LD, `sitemap.xml`, `robots.txt` and `llms.txt`.
 
 ## Configuration: every CTA reads from one place
 
@@ -40,8 +40,8 @@ Edit the `window.LATRYN` block at the top of `assets/site.js`:
 
 | Key | Used by |
 |---|---|
-| `email` | Contact form, "Scope a program", "Book a call" fallback, footer email |
-| `careersEmail` | "Join the Lattice" application form |
+| `email` | `contact@latryn.com`. Contact form, "Scope a program", "Book a call" fallback, footer email |
+| `careersEmail` | `contact@latryn.com`. "Join the Lattice" application form |
 | `bookingUrl` | "Book a call". Empty = scrolls to the contact form with "Book a call" preselected |
 | `social.linkedin/x/youtube` | Footer links. Empty = link is hidden, never broken |
 
@@ -50,6 +50,8 @@ CTAs declare intent with attributes; do not hard-code mailto links:
 - `data-audience="AI Labs|AI Platforms|Enterprise AI"` prefills audience.
 - `data-cta="apply" data-role="<role>"` prefills the Lattice application form.
 - Cross-page links use URL params: `index.html?type=Scope%20a%20program#contact`.
+
+The build also writes the address into every `data-email` link, so it shows without JavaScript; if you change it, update `EMAIL` in `build_pages.py` too.
 
 Forms have no backend: they compose an email with the answers. To switch to a form service later, replace `wire()` in `site.js` and keep the field names.
 

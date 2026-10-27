@@ -2,7 +2,7 @@
 
 > When crowd labels are enough, when you need specialists, and how to measure annotation quality instead of assuming it.
 
-Published 2026-10-24 by the Latryn Research Team. Canonical: https://YOUR-DOMAIN.com/blog/expert-vs-crowd-annotation.html
+Published 2026-10-24 by the Latryn Research Team. Canonical: https://latryn.com/blog/expert-vs-crowd-annotation.html
 
 ## Key takeaways
 

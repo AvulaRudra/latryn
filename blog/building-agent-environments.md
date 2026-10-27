@@ -2,7 +2,7 @@
 
 > Docker images, terminal tasks and verifiers: a practical anatomy of the environments used to train and evaluate AI agents.
 
-Published 2026-10-24 by the Latryn Research Team. Canonical: https://YOUR-DOMAIN.com/blog/building-agent-environments.html
+Published 2026-10-24 by the Latryn Research Team. Canonical: https://latryn.com/blog/building-agent-environments.html
 
 ## Key takeaways
 

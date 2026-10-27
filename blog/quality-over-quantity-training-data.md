@@ -2,7 +2,7 @@
 
 > The research case for smaller, cleaner, expert-written datasets, and a practical checklist for getting there.
 
-Published 2026-10-24 by the Latryn Research Team. Canonical: https://YOUR-DOMAIN.com/blog/quality-over-quantity-training-data.html
+Published 2026-10-24 by the Latryn Research Team. Canonical: https://latryn.com/blog/quality-over-quantity-training-data.html
 
 ## Key takeaways
 
