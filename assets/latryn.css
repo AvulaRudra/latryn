@@ -44,7 +44,7 @@ h1,h2,h3{font-family:var(--disp);font-weight:700;margin:0}
 .nav.hide{transform:translateY(-110%)}
 .nav-in{max-width:1200px;margin:0 auto;padding:10px 12px 10px 22px;display:flex;align-items:center;justify-content:space-between;gap:24px;background:rgba(251,250,247,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--hair);border-radius:10px;transition:box-shadow .3s}
 .nav.scrolled .nav-in{box-shadow:0 10px 30px rgba(17,15,12,.08)}
-.nav-links{display:flex;gap:32px}
+.nav-links{display:flex;gap:32px}.nav-links a,.nav .btn{white-space:nowrap}@media (max-width:1180px){.nav-links{gap:20px}}
 .nav-links a{position:relative;color:var(--ink);text-decoration:none;font-size:15px;padding:6px 0}
 .nav-links a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--verd);transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease)}
 .nav-links a:hover::after,.nav-links a[aria-current="page"]::after{transform:scaleX(1)}

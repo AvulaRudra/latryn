@@ -12,7 +12,8 @@ window.LATRYN = {
   social: {
     linkedin: "",                          // e.g. https://www.linkedin.com/company/latryn
     x: "",                                 // e.g. https://x.com/latryn
-    youtube: ""                            // e.g. https://www.youtube.com/@latryn
+    youtube: "",                           // e.g. https://www.youtube.com/@latryn
+    discord: "https://discord.gg/FX8hXUmCE" // community invite: footer and the apply success panel
   }
 };
 

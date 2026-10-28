@@ -68,7 +68,7 @@ def nav(pre, current=''):
     def cur(n): return ' aria-current="page"' if n == current else ''
     return f'''<header class="nav" id="nav"><nav class="nav-in" aria-label="Main">
 <a href="{pre}index.html" class="logo" aria-label="Latryn home"><svg viewBox="0 0 292 94" width="87" height="28" aria-hidden="true">{LOGO}</svg></a>
-<div class="nav-links"><a href="{pre}index.html#egocentric">Egocentric</a><a href="{pre}index.html#build">Services</a><a href="{pre}index.html#quality">Quality</a><a href="{pre}sample-tasks.html"{cur('tasks')}>Sample tasks</a><a href="{pre}blog/index.html"{cur('blog')}>Blog</a><a href="{pre}index.html#lattice">Careers</a></div>
+<div class="nav-links"><a href="{pre}index.html#egocentric">Egocentric</a><a href="{pre}index.html#build">Services</a><a href="{pre}index.html#quality">Quality</a><a href="{pre}sample-tasks.html"{cur('tasks')}>Sample tasks</a><a href="{pre}blog/index.html"{cur('blog')}>Blog</a><a href="{pre}index.html#lattice">Careers</a><a data-social="discord" href="https://discord.gg/FX8hXUmCE">Discord</a></div>
 <a class="btn btn-ink" href="{pre}index.html?type=Scope%20a%20program#contact" style="min-height:44px;padding:11px 18px;font-size:15px">Scope a program <span class="sq" aria-hidden="true"></span></a>
 </nav></header>'''
 
@@ -81,7 +81,7 @@ def footer(pre):
 <div><span class="h">PRACTICES</span><a href="{pre}index.html#build">Latryn Eval</a><a href="{pre}index.html#build">Latryn Train</a><a href="{pre}index.html#build">Latryn Env</a><a href="{pre}index.html#egocentric">Latryn Capture</a><a href="{pre}index.html#build">Latryn Review</a></div>
 <div><span class="h">BLOG</span>{posts}<a href="{pre}blog/index.html">All articles</a></div>
 <div><span class="h">COMPANY</span><a href="{pre}index.html#quality">Quality process</a><a href="{pre}sample-tasks.html">Sample tasks</a><a href="{pre}index.html#lattice">Careers</a><a href="{pre}index.html#contact">Contact</a></div>
-<div><span class="h">SOCIAL</span><a data-social="linkedin" href="#">LinkedIn</a><a data-social="x" href="#">X</a><a data-social="youtube" href="#">YouTube</a><a data-email="general" href="#"></a></div>
+<div><span class="h">SOCIAL</span><a data-social="linkedin" href="#">LinkedIn</a><a data-social="x" href="#">X</a><a data-social="youtube" href="#">YouTube</a><a data-social="discord" href="https://discord.gg/FX8hXUmCE">Discord</a><a data-email="general" href="#"></a></div>
 </div></div>
 <div class="legal"><span>© 2026 Latryn · Bengaluru, India</span><span style="display:flex;gap:20px"><a href="{pre}privacy.html">Privacy</a><a href="{pre}terms.html">Terms</a></span></div>
 </div></footer>
@@ -292,7 +292,7 @@ def apply_page():
 <span class="eyebrow">Application received</span>
 <h2 id="done-title">Thanks, <span id="done-name">there</span><span class="dot on"></span></h2>
 <p>We sent a confirmation to <b id="done-email"></b>. Our team reviews every application and will email you about next steps.</p>
-<div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn btn-ink" href="index.html">Back to home <span class="arr" aria-hidden="true">→</span></a><a class="btn btn-ghost" href="sample-tasks.html">See sample tasks</a></div>
+<div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn btn-ink" href="index.html">Back to home <span class="arr" aria-hidden="true">→</span></a><a class="btn btn-verd" data-social="discord" href="https://discord.gg/FX8hXUmCE">Join our Discord <span class="arr" aria-hidden="true">→</span></a><a class="btn btn-ghost" href="sample-tasks.html">See sample tasks</a></div>
 </section>
 </div>
 </main>''' + footer(''))
