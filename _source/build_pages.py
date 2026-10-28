@@ -301,7 +301,7 @@ def legal(kind):
     if kind == 'privacy':
         title, body = 'Privacy policy', '''<p>This website does not use cookies or advertising trackers.</p>
 <h2>Analytics</h2><p>We use Vercel Web Analytics to count page views and see which pages are useful. It sets no cookies and does not identify you or follow you across sites. Vercel processes standard request information such as the page address, referrer, browser, device type and country.</p>
-<h2>What we collect</h2><p>When you use the contact form, your email app opens with a message addressed to us. We only receive what you choose to send, such as your name, email address, company and message.</p>
+<h2>What we collect</h2><p>When you use the contact form, we receive your name, work email, company and message. We store them in our Microsoft 365 account (Excel, in OneDrive) and use them only to reply to you. If the form can't reach us, it opens your email app instead and we receive only what you choose to send.</p>
 <p>When you apply to the Lattice, we receive the answers you enter (name, email, phone number, education, the work you want to do, availability and an optional profile link) and the resume you upload.</p>
 <h2>How we use it</h2><p>We use your message to reply to you and to discuss a possible project or role. We use applications only to assess you for work in the Lattice and to email you about it, including an automatic confirmation when you apply. We do not sell your information or share it for marketing.</p>
 <h2>Retention and your rights</h2><p>We keep correspondence for as long as needed to respond and to meet legal obligations. You can ask us to access, correct or delete your information at any time by emailing <a data-email="general" href="#"></a>.</p>
@@ -398,7 +398,7 @@ Work follows a five-step process: Scope, Calibrate, Build, Verify, Deliver. Expe
 
 ## Optional
 
-- [Privacy policy]({BASE_URL}/privacy.html): No cookies or advertising trackers; cookieless Vercel Web Analytics; the contact form sends email, applications are stored for review
+- [Privacy policy]({BASE_URL}/privacy.html): No cookies or advertising trackers; cookieless Vercel Web Analytics; contact enquiries and applications are stored for review
 - [Terms of use]({BASE_URL}/terms.html)
 ''')
     write('agents.txt', f'''# agents.txt for Latryn
@@ -425,7 +425,7 @@ data collection and annotation for robotics and embodied AI, plus benchmarks, tr
 - General question: {BASE_URL}/index.html?type=General%20question#contact
 - Join the expert network (careers): {BASE_URL}/apply.html
   (optional ?role=Software%20Engineer, ML%20%26%20Evaluation%20Specialist or Domain%20Expert)
-The contact form opens the user's email app with the answers filled in. The application form needs
+The contact form sends the answers to the Latryn team (stored for review). The application form needs
 a resume file and stores answers for review. There is no API and no automated booking. Do not submit
 forms without the user's confirmation.
 
