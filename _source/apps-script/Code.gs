@@ -26,7 +26,7 @@ var CONFIG = {
   var props = PropertiesService.getScriptProperties();
   ['TEAM_EMAIL', 'REPLY_TO', 'SENDER_NAME', 'SITE_URL'].forEach(function (k) {
     var v = props.getProperty(k);
-    if (v != null && v.trim() !== '') CONFIG[k] = v.trim() === 'none' ? '' : v.trim();
+    if (v != null && v.trim() !== '') CONFIG[k] = k === 'TEAM_EMAIL' && v.trim() === 'none' ? '' : v.trim();
   });
 })();
 
