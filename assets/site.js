@@ -10,7 +10,7 @@ window.LATRYN = {
   applyEndpoint: "",                       // "/api/apply" once Microsoft 365 is set up (the Vercel build fills it in); empty = email fallback
   bookingUrl: "",                          // e.g. a Cal.com or Calendly link; empty = use the contact form
   social: {
-    linkedin: "",                          // e.g. https://www.linkedin.com/company/latryn
+    linkedin: "https://www.linkedin.com/company/latryn",
     x: "",                                 // e.g. https://x.com/latryn
     youtube: "",                           // e.g. https://www.youtube.com/@latryn
     discord: "https://discord.gg/FX8hXUmCE" // community invite: footer and the apply success panel

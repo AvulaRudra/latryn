@@ -53,7 +53,7 @@ def head(title, desc, path, pre, extra='', og_type='website'):
 <meta name="twitter:card" content="summary_large_image">
 <script>document.documentElement.classList.add("js")</script>
 <meta name="theme-color" content="#f5f2ec">
-<link rel="icon" href="{pre}favicon.svg" type="image/svg+xml">
+<link rel="icon" href="{pre}favicon.ico" sizes="any"><link rel="icon" href="{pre}favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="{pre}apple-touch-icon.png"><link rel="manifest" href="{pre}site.webmanifest">
 <link rel="alternate" type="text/plain" title="LLM site guide" href="{pre}llms.txt">
 {FONTS}
 <link rel="stylesheet" href="{pre}assets/vendor/lenis.css">
@@ -96,7 +96,7 @@ def short(t):
 
 def ld(obj): return '<script type="application/ld+json">' + json.dumps(obj, ensure_ascii=False) + '</script>'
 
-ORG = {"@type": "Organization", "name": "Latryn", "url": BASE_URL + "/", "logo": BASE_URL + "/favicon.svg"}
+ORG = {"@type": "Organization", "name": "Latryn", "url": BASE_URL + "/", "logo": BASE_URL + "/icon-512.png", "sameAs": ["https://www.linkedin.com/company/latryn"]}
 
 def refs_from(body):
     out = []
@@ -215,7 +215,7 @@ SPECIALIZATIONS = [
     'Pure Mathematics (Algebra, Calculus, Geometry, Number Theory)',
     'Applied Mathematics (Statistics, Actuarial Science, Cryptography, Quantitative Finance)',
     'Other']
-WORK_TYPES = ['Writing / Content', 'Design', 'Development', 'Data / Research', 'Teaching / Tutoring', 'Other']
+WORK_TYPES = ['SFT (supervised fine-tuning)', 'RLHF and preference ranking', 'Red teaming', 'Evaluations and benchmarks', 'Agent environments', 'Video and egocentric annotation', 'Coding tasks']
 AVAILABILITY = ['Part-time', 'Full-time', 'Weekends only']
 
 def apply_page():
