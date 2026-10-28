@@ -38,5 +38,5 @@ Work follows a five-step process: Scope, Calibrate, Build, Verify, Deliver. Expe
 
 ## Optional
 
-- [Privacy policy](https://latryn.com/privacy.html): No cookies or trackers; the contact form sends email, applications are stored for review
+- [Privacy policy](https://latryn.com/privacy.html): No cookies or advertising trackers; cookieless Vercel Web Analytics; the contact form sends email, applications are stored for review
 - [Terms of use](https://latryn.com/terms.html)

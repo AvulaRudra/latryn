@@ -131,5 +131,5 @@ Then open the homepage at 390px and 1440px widths, submit both forms once, and c
 
 ## Security and privacy
 
-- No third-party scripts besides Google Fonts. Lenis (smooth scrolling, MIT licence) and GSAP 3.13 with ScrollTrigger (GreenSock standard no-charge licence) are bundled locally in `assets/vendor/`, not loaded from a CDN. Do not add analytics or trackers without updating `privacy.html`.
+- No third-party scripts besides Google Fonts and Vercel Web Analytics (cookieless, loaded first-party from `/_vercel/insights/script.js`; it only works when the site is hosted on Vercel). Lenis (smooth scrolling, MIT licence) and GSAP 3.13 with ScrollTrigger (GreenSock standard no-charge licence) are bundled locally in `assets/vendor/`, not loaded from a CDN. Do not add other analytics or trackers without updating `privacy.html`.
 - Never commit real personal data or client task files into this repo.

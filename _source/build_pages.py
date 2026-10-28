@@ -7,6 +7,9 @@ OUT = os.path.join(ROOT, 'dist')
 BASE_URL = 'https://latryn.com'        # live domain; change here and rebuild if it ever moves
 EMAIL = 'contact@latryn.com'           # keep in sync with window.LATRYN in assets/site.js
 PUBLISHED = '2026-10-24'
+# Vercel Web Analytics: cookieless page views, served first-party by Vercel (only works when hosted on Vercel)
+ANALYTICS = ('<script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};</script>\n'
+             '<script defer src="/_vercel/insights/script.js"></script>\n')
 LOGO = open(os.path.join(ROOT, 'logo_inner.txt')).read().strip()
 ORDER = ['egocentric-data-collection', 'trustworthy-ai-benchmarks', 'rlhf-preference-data-guide', 'building-agent-environments',
          'quality-over-quantity-training-data', 'expert-vs-crowd-annotation', 'red-teaming-language-models']
@@ -56,7 +59,7 @@ def head(title, desc, path, pre, extra='', og_type='website'):
 <link rel="stylesheet" href="{pre}assets/vendor/lenis.css">
 <link rel="stylesheet" href="{pre}assets/latryn.css">
 {extra}
-</head>
+{ANALYTICS}</head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <div class="progress" aria-hidden="true"></div>'''
@@ -296,7 +299,8 @@ def apply_page():
 
 def legal(kind):
     if kind == 'privacy':
-        title, body = 'Privacy policy', '''<p>This website does not use cookies, analytics or advertising trackers.</p>
+        title, body = 'Privacy policy', '''<p>This website does not use cookies or advertising trackers.</p>
+<h2>Analytics</h2><p>We use Vercel Web Analytics to count page views and see which pages are useful. It sets no cookies and does not identify you or follow you across sites. Vercel processes standard request information such as the page address, referrer, browser, device type and country.</p>
 <h2>What we collect</h2><p>When you use the contact form, your email app opens with a message addressed to us. We only receive what you choose to send, such as your name, email address, company and message.</p>
 <p>When you apply to the Lattice, we receive the answers you enter (name, email, phone number, education, the work you want to do, availability and an optional profile link) and the resume you upload.</p>
 <h2>How we use it</h2><p>We use your message to reply to you and to discuss a possible project or role. We use applications only to assess you for work in the Lattice and to email you about it, including an automatic confirmation when you apply. We do not sell your information or share it for marketing.</p>
@@ -394,7 +398,7 @@ Work follows a five-step process: Scope, Calibrate, Build, Verify, Deliver. Expe
 
 ## Optional
 
-- [Privacy policy]({BASE_URL}/privacy.html): No cookies or trackers; the contact form sends email, applications are stored for review
+- [Privacy policy]({BASE_URL}/privacy.html): No cookies or advertising trackers; cookieless Vercel Web Analytics; the contact form sends email, applications are stored for review
 - [Terms of use]({BASE_URL}/terms.html)
 ''')
     write('agents.txt', f'''# agents.txt for Latryn
