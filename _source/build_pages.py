@@ -305,7 +305,7 @@ def legal(kind):
 <p>When you apply to the Lattice, we receive the answers you enter (name, email, phone number, education, the work you want to do, availability and an optional profile link) and the resume you upload.</p>
 <h2>How we use it</h2><p>We use your message to reply to you and to discuss a possible project or role. We use applications only to assess you for work in the Lattice and to email you about it, including an automatic confirmation when you apply. We do not sell your information or share it for marketing.</p>
 <h2>Retention and your rights</h2><p>We keep correspondence for as long as needed to respond and to meet legal obligations. You can ask us to access, correct or delete your information at any time by emailing <a data-email="general" href="#"></a>.</p>
-<h2>Third parties</h2><p>Fonts are loaded from Google Fonts, which receives standard request information such as your IP address.</p><p>Applications are stored in Google Workspace (Google Sheets and Google Drive) and the confirmation email is sent through Google. Access is limited to the Latryn team.</p>'''
+<h2>Third parties</h2><p>Fonts are loaded from Google Fonts, which receives standard request information such as your IP address.</p><p>Applications are stored in Microsoft 365 (an Excel workbook and resumes in OneDrive), the confirmation email is sent through Microsoft Outlook, and the form is processed by our hosting provider, Vercel. Access is limited to the Latryn team.</p>'''
     else:
         title, body = 'Terms of use', '''<p>By using this website you agree to these terms.</p>
 <h2>Content</h2><p>Articles are provided for information. We link to the original research for every cited claim, and those works belong to their authors.</p>

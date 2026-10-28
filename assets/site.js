@@ -7,7 +7,7 @@
 window.LATRYN = {
   email: "contact@latryn.com",            // receives "Scope a program", "Book a call" and general enquiries
   careersEmail: "contact@latryn.com",     // receives "Join the Lattice" applications
-  applyEndpoint: "",                       // Google Apps Script web app URL (see apps-script/README.md); empty = email fallback
+  applyEndpoint: "",                       // "/api/apply" once Microsoft 365 is set up (the Vercel build fills it in); empty = email fallback
   bookingUrl: "",                          // e.g. a Cal.com or Calendly link; empty = use the contact form
   social: {
     linkedin: "",                          // e.g. https://www.linkedin.com/company/latryn
@@ -122,7 +122,7 @@ window.LATRYN = {
   }
   wire(contact, C.email, function (fd) { return (fd.get("type") || "Enquiry") + " | " + (fd.get("company") || fd.get("name")); });
 
-  /* ---------- Lattice application (apply.html): validates, then posts to the Apps Script endpoint ---------- */
+  /* ---------- Lattice application (apply.html): validates, uploads the resume to OneDrive, then saves via /api/apply ---------- */
   if (apply) (function () {
     var MAX = 10 * 1024 * 1024, EXT = /\.(pdf|docx?)$/i;
     var fileIn = apply.elements.resume, drop = document.getElementById("drop"), dropT = document.getElementById("drop-t");
@@ -216,13 +216,15 @@ window.LATRYN = {
 
     if (params.get("role")) apply.elements.role.value = params.get("role");
 
-    function readFile(f) {
-      return new Promise(function (res, rej) {
-        var r = new FileReader();
-        r.onload = function () { res(String(r.result).split(",")[1]); };
-        r.onerror = function () { rej(new Error("We couldn't read that file. Try choosing it again.")); };
-        r.readAsDataURL(f);
-      });
+    function post(body) {
+      return fetch(C.applyEndpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })
+        .then(function (r) { return r.json(); })
+        .then(function (r) { if (!r.ok) { var e = new Error(r.error || "Something went wrong. Please try again."); e.user = true; throw e; } return r; });
+    }
+    /* the resume goes straight to the OneDrive upload URL the server opened, in one request (OneDrive accepts up to 60 MB) */
+    function upload(url, f) {
+      return fetch(url, { method: "PUT", headers: { "Content-Range": "bytes 0-" + (f.size - 1) + "/" + f.size }, body: f })
+        .then(function (r) { if (!r.ok) { var e = new Error("Your resume didn't upload. Please try again."); e.user = true; throw e; } });
     }
     function busy(on) {
       btn.disabled = on;
@@ -266,17 +268,14 @@ window.LATRYN = {
         return;
       }
       busy(true);
-      readFile(file).then(function (b64) {
-        data.resume = { name: file.name, type: file.type || "application/octet-stream", data: b64 };
-        /* text/plain keeps this a simple request, so the browser skips the CORS preflight Apps Script can't answer */
-        return fetch(C.applyEndpoint, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(data) });
-      }).then(function (r) { return r.json(); }).then(function (res) {
-        busy(false);
-        if (res && res.ok) done(data);
-        else fail((res && res.error) || "Something went wrong. Please try again.");
+      post(Object.assign({ action: "start", resume: { name: file.name, size: file.size } }, data)).then(function (r) {
+        if (!r.uploadUrl) return r;
+        return upload(r.uploadUrl, file).then(function () { return post(Object.assign({ action: "finish", ticket: r.ticket }, data)); });
+      }).then(function () {
+        busy(false); done(data);
       }).catch(function (err) {
         busy(false);
-        fail((err && /read that file/.test(err.message) ? err.message : "We couldn't send your application. Check your connection and try again.") + " If it keeps failing, email " + C.careersEmail + ".");
+        fail((err && err.user ? err.message : "We couldn't send your application. Check your connection and try again.") + " If it keeps failing, email " + C.careersEmail + ".");
       });
     });
     progress();
