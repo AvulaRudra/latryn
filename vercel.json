@@ -1,7 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
-  "buildCommand": "",
+  "installCommand": "",
+  "buildCommand": "node _source/inject-env.js",
   "outputDirectory": ".",
   "trailingSlash": false
 }

@@ -19,11 +19,15 @@ Emails are sent from the Google account that deploys the script. Deploy it from 
    - Execute as: **Me**
    - Who has access: **Anyone**
 7. Click **Deploy** and copy the **Web app URL** (it ends in `/exec`).
-8. Paste that URL into `applyEndpoint` in `_source/assets/site.js` (and `assets/site.js` at the top level), then rebuild and publish:
+8. Give the site that URL. Pick one:
+   - **Vercel environment variable (recommended on Vercel):** in Vercel open Project > Settings > Environment Variables, add `APPLY_ENDPOINT` with the URL for Production (and Preview if you want previews to save applications too), then redeploy. `vercel.json` runs `_source/inject-env.js` on every deploy, which writes the value into `assets/site.js`. Nothing changes in git.
+   - **In the code:** paste the URL into `applyEndpoint` in `_source/assets/site.js` and `assets/site.js`, then rebuild and publish:
 
-   ```bash
-   cd _source && python3 build.py && python3 check_site.py dist
-   ```
+     ```bash
+     cd _source && python3 build.py && python3 check_site.py dist
+     ```
+
+   The URL is visible to visitors either way (their browser posts to it). The env var keeps it out of the repo and lets you change it without a commit.
 
 9. Open the URL in a browser. It should show `{"ok":true,...}`. Then send a test application from `apply.html`.
 
@@ -31,7 +35,7 @@ Until `applyEndpoint` is set, the form falls back to opening the visitor's email
 
 ## Changing the script later
 
-After editing `Code.gs`, go to **Deploy > Manage deployments**, edit the existing deployment and pick **New version**. This keeps the same URL. If you choose "New deployment" instead you get a new URL, and you have to update `applyEndpoint`.
+After editing `Code.gs`, go to **Deploy > Manage deployments**, edit the existing deployment and pick **New version**. This keeps the same URL. If you choose "New deployment" instead you get a new URL, and you have to update `APPLY_ENDPOINT` in Vercel (then redeploy) or `applyEndpoint` in the code.
 
 ## Changing the form fields
 

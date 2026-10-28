@@ -43,7 +43,7 @@ Edit the `window.LATRYN` block at the top of `assets/site.js`:
 |---|---|
 | `email` | `contact@latryn.com`. Contact form, "Scope a program", "Book a call" fallback, footer email |
 | `careersEmail` | `contact@latryn.com`. Fallback address for `apply.html` when `applyEndpoint` is empty |
-| `applyEndpoint` | Google Apps Script web app URL for `apply.html`. Saves to a Google Sheet, stores the resume in Drive, emails the applicant. Setup: `_source/apps-script/README.md` |
+| `applyEndpoint` | Google Apps Script web app URL for `apply.html`. Saves to a Google Sheet, stores the resume in Drive, emails the applicant. On Vercel, set the `APPLY_ENDPOINT` env var instead; `vercel.json` runs `_source/inject-env.js` to write it in at deploy. Setup: `_source/apps-script/README.md` |
 | `bookingUrl` | "Book a call". Empty = scrolls to the contact form with "Book a call" preselected |
 | `social.linkedin/x/youtube` | Footer links. Empty = link is hidden, never broken |
 
