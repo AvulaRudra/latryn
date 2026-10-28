@@ -9,6 +9,7 @@ Static marketing site for **Latryn**, a data lab for frontier AI. **Lead offer: 
 ```
 index.html              homepage (self-contained CSS, loads assets/site.js and assets/home.js)
 sample-tasks.html       task library preview (CTA target for "Browse sample tasks")
+apply.html              "Apply to the Lattice" application form (generated; posts to Google Apps Script)
 privacy.html, terms.html, 404.html
 blog/index.html         blog listing
 blog/<slug>.html        articles (generated)
@@ -41,19 +42,20 @@ Edit the `window.LATRYN` block at the top of `assets/site.js`:
 | Key | Used by |
 |---|---|
 | `email` | `contact@latryn.com`. Contact form, "Scope a program", "Book a call" fallback, footer email |
-| `careersEmail` | `contact@latryn.com`. "Join the Lattice" application form |
+| `careersEmail` | `contact@latryn.com`. Fallback address for `apply.html` when `applyEndpoint` is empty |
+| `applyEndpoint` | Google Apps Script web app URL for `apply.html`. Saves to a Google Sheet, stores the resume in Drive, emails the applicant. On Vercel, set the `APPLY_ENDPOINT` env var instead; `vercel.json` runs `_source/inject-env.js` to write it in at deploy. Setup: `_source/apps-script/README.md` |
 | `bookingUrl` | "Book a call". Empty = scrolls to the contact form with "Book a call" preselected |
 | `social.linkedin/x/youtube` | Footer links. Empty = link is hidden, never broken |
 
 CTAs declare intent with attributes; do not hard-code mailto links:
 - `data-cta="<option text>"` prefills the contact form's "I want to" select. The value must match an `<option>` exactly.
 - `data-audience="AI Labs|AI Platforms|Enterprise AI"` prefills audience.
-- `data-cta="apply" data-role="<role>"` prefills the Lattice application form.
+- Lattice CTAs link to `apply.html` (optionally `apply.html?role=<role>`, stored with the application).
 - Cross-page links use URL params: `index.html?type=Scope%20a%20program#contact`.
 
 The build also writes the address into every `data-email` link, so it shows without JavaScript; if you change it, update `EMAIL` in `build_pages.py` too.
 
-Forms have no backend: they compose an email with the answers. To switch to a form service later, replace `wire()` in `site.js` and keep the field names.
+The contact form has no backend: it composes an email with the answers. The application form posts to `applyEndpoint`; its dropdown options live in `build_pages.py` and must match `OPTIONS` in `apps-script/Code.gs`. To switch to a form service later, replace `wire()` in `site.js` and keep the field names.
 
 ## Egocentric data: how it appears on the site
 
@@ -129,5 +131,5 @@ Then open the homepage at 390px and 1440px widths, submit both forms once, and c
 
 ## Security and privacy
 
-- No third-party scripts besides Google Fonts. Lenis (smooth scrolling, MIT licence) and GSAP 3.13 with ScrollTrigger (GreenSock standard no-charge licence) are bundled locally in `assets/vendor/`, not loaded from a CDN. Do not add analytics or trackers without updating `privacy.html`.
+- No third-party scripts besides Google Fonts and Vercel Web Analytics (cookieless, loaded first-party from `/_vercel/insights/script.js`; it only works when the site is hosted on Vercel). Lenis (smooth scrolling, MIT licence) and GSAP 3.13 with ScrollTrigger (GreenSock standard no-charge licence) are bundled locally in `assets/vendor/`, not loaded from a CDN. Do not add other analytics or trackers without updating `privacy.html`.
 - Never commit real personal data or client task files into this repo.
