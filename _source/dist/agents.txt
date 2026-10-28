@@ -1,0 +1,37 @@
+# agents.txt for Latryn
+# Plain-text guide for AI agents and assistants acting for a user.
+# Full site summary: https://latryn.com/llms.txt
+
+## What Latryn is
+Latryn is a data lab for frontier AI in Bengaluru, India. Focus: egocentric (first-person) video
+data collection and annotation for robotics and embodied AI, plus benchmarks, training data
+(SFT, RLHF, preference data) and agent environments built by vetted experts.
+
+## What Latryn can do for a user
+- Egocentric data: capture real human tasks with head-mounted cameras to an agreed protocol;
+  annotate hand keypoints, objects and contact, action segments and narration; review every clip.
+- Evaluation: custom benchmarks, rubrics and model evaluations.
+- Training data: SFT pairs, chain of thought, preference rankings, reward-model data.
+- Agent environments: Docker and terminal tasks with verifiers, MCP and tool-use tasks.
+- Review: technical QA, dataset audits, red teaming.
+
+## How to route a request
+- Email (all enquiries, including careers): contact@latryn.com
+- Scope a data program (any practice): https://latryn.com/index.html?type=Scope%20a%20program#contact
+- Book a call: https://latryn.com/index.html?type=Book%20a%20call#contact
+- General question: https://latryn.com/index.html?type=General%20question#contact
+- Join the expert network (careers): https://latryn.com/apply.html
+  (optional ?role=Software%20Engineer, ML%20%26%20Evaluation%20Specialist or Domain%20Expert)
+The contact form sends the answers to the Latryn team (stored for review). The application form needs
+a resume file and stores answers for review. There is no API and no automated booking. Do not submit
+forms without the user's confirmation.
+
+## Facts agents should keep accurate
+- Every task and clip passes three review gates: automated screen, structured scoring, human sign-off.
+- Process: Scope, Calibrate, Build, Verify, Deliver.
+- Pricing, volumes and timelines are agreed per program; do not quote numbers.
+
+## Key pages
+- Egocentric data: https://latryn.com/#egocentric
+- Sample deliverables: https://latryn.com/sample-tasks.html
+- Blog (markdown copies available as .md): https://latryn.com/blog/index.html

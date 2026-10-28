@@ -1,0 +1,476 @@
+# Latryn: full article text
+
+# Egocentric data collection for robotics and embodied AI
+
+> Why first-person video matters for models that act in the world, what the major public datasets teach about scale and annotation, and what a capture program needs to get right.
+
+Published 2026-10-24 by the Latryn Research Team. Canonical: https://latryn.com/blog/egocentric-data-collection.html
+
+## Key takeaways
+
+- Egocentric video shows a task the way the person doing it sees it: hands, objects and attention in one frame.
+- Public datasets show the range: Ego4D has 3,670 hours from 931 camera wearers; EPIC-KITCHENS-100 has 90K annotated actions.
+- Dense, consistent annotation matters as much as hours of footage.
+- Human first-person data can train robot policies directly: one study found an hour of hand data worth more than an hour of robot data.
+- A good program fixes the protocol, consent and annotation schema before the first recording.
+
+Most video on the internet is filmed by someone watching. Models that have to act, such as robot policies, assistants in smart glasses and agents that follow a person through a task, need the other view: the one from the eyes of the person doing the work. That first-person view is called egocentric data, and collecting it well is a discipline of its own.
+
+## Why the first-person view
+
+An egocentric clip puts the hands, the objects they touch and the direction of attention in the same frame. It captures the order of steps, the small corrections and the moments of hesitation that a third-person camera misses. For robotics and embodied AI, that is the signal that matters: what a skilled person actually does, from where they actually stand.
+
+## What the public datasets teach
+
+Three research datasets show what large-scale egocentric collection looks like and where the effort goes.
+
+**Scale and diversity.** Ego4D collected 3,670 hours of daily-life video from 931 unique camera wearers in 74 locations across 9 countries [[1]](#ref-1). Its benchmarks span remembering the past, understanding the present (including hand and object manipulation) and forecasting what happens next [[1]](#ref-1). The lesson: diversity of people and places is designed in, not hoped for.
+
+**Annotation density.** EPIC-KITCHENS-100 contains 100 hours of video, 20M frames and 90K actions recorded in 45 kitchen environments [[2]](#ref-2). Its authors built a new annotation pipeline that produced denser and more complete labels, with 54% more actions per minute than the earlier version [[2]](#ref-2). The lesson: how you annotate decides what a dataset is worth.
+
+**Skill and expertise.** Ego-Exo4D captured skilled human activity from 740 participants in 13 cities, 1,286 hours of video recorded from first-person and third-person cameras at the same time, with gaze, IMU and 3D point clouds [[3]](#ref-3). It also includes commentary written by coaches and teachers about how well each activity was performed [[3]](#ref-3). The lesson: for skilled tasks, expert judgement is part of the data.
+
+## From watching to doing
+
+Egocentric video is no longer only for recognition models. EgoMimic recorded human demonstrations with Project Aria glasses, paired them with 3D hand tracking, and trained a single robot policy on human and robot data together [[4]](#ref-4). The authors report that an additional hour of hand data was significantly more valuable than an additional hour of robot data [[4]](#ref-4). Human first-person data is cheaper to collect than robot teleoperation, and it scales with people rather than hardware.
+
+## What a capture program needs
+
+Footage alone is not a dataset. The programs that work decide these things before anyone presses record:
+
+- **A capture protocol.** Which tasks, which environments, how long each session runs, how the camera is worn and what counts as a usable clip.
+- **Consent and privacy.** Written consent from every contributor, clear rules for bystanders, screens and documents in view, and how clips are stored and handed over.
+- **An annotation schema.** Which labels you need: hand keypoints, object boxes and contact, action segments with start and end times, narration, or quality judgements. Write the edge cases down.
+- **Agreement checks.** Overlap a share of clips between annotators and measure agreement with chance-corrected statistics, as with any human labelling. Our note on [expert and crowd annotation](expert-vs-crowd-annotation.html) explains how.
+- **Review before delivery.** Reject clips that break the protocol before they are labelled, and review labels before they reach your training pipeline.
+
+## How Latryn runs egocentric programs
+
+Latryn Capture follows the same loop as our other practices. We agree the tasks, devices, consent process and annotation schema with you in writing. A pilot batch calibrates contributors and annotators on the edge cases. Contributors then record real tasks with head-mounted cameras, trained reviewers segment and label each clip, and every clip passes three gates (automated screen, structured scoring and human sign-off) before delivery.
+
+See [the structure of a sample egocentric clip](../sample-tasks.html#egocentric-sample) or [scope a capture program](../index.html?type=Scope%20a%20program#contact).
+
+## References
+
+1. Grauman, K., et al. (2022). *Ego4D: Around the World in 3,000 Hours of Egocentric Video.* CVPR 2022. [arXiv:2110.07058](https://arxiv.org/abs/2110.07058)
+2. Damen, D., et al. (2022). *Rescaling Egocentric Vision: Collection, Pipeline and Challenges for EPIC-KITCHENS-100.* International Journal of Computer Vision. [arXiv:2006.13256](https://arxiv.org/abs/2006.13256)
+3. Grauman, K., et al. (2024). *Ego-Exo4D: Understanding Skilled Human Activity from First- and Third-Person Perspectives.* CVPR 2024. [arXiv:2311.18259](https://arxiv.org/abs/2311.18259)
+4. Kareer, S., et al. (2024). *EgoMimic: Scaling Imitation Learning via Egocentric Video.* [arXiv:2410.24221](https://arxiv.org/abs/2410.24221)
+
+
+---
+
+# What makes an AI benchmark trustworthy
+
+> Contamination, unfair tests and vague task statements quietly break evaluations. Here is how to build benchmarks whose scores you can believe.
+
+Published 2026-10-24 by the Latryn Research Team. Canonical: https://latryn.com/blog/trustworthy-ai-benchmarks.html
+
+## Key takeaways
+
+- A benchmark score is only as good as its task statements, its tests and its isolation from training data.
+- Human review of an existing benchmark can change scores a lot: OpenAI's review of SWE-bench filtered out 68.3% of the samples it annotated.
+- Contamination cannot be fully eliminated, so plan for detection, fresh tasks and private test sets from day one.
+- Every task needs a reference solution and a verifier that accepts all valid answers, not only the one the author wrote.
+
+A benchmark is a promise: if a model scores well here, it can do this kind of work out there. That promise breaks more often than leaderboards suggest. Tasks leak into training data, tests reject correct answers, and problem statements leave out the detail a competent engineer would need. The score still looks precise. It just measures the wrong thing.
+
+This article covers the three failure modes we see most often when we author and audit evaluation sets, and the controls that fix them.
+
+## Failure mode 1: the task statement is underspecified
+
+A task is underspecified when a skilled human could not be expected to solve it from the information given. In coding benchmarks this usually means an issue description that omits the expected behaviour, or a hidden requirement that only appears in the tests.
+
+SWE-bench, which asks models to resolve real GitHub issues, made this visible. The original benchmark collected 2,294 task instances from 12 popular Python repositories [[1]](#ref-1). When OpenAI later had 93 experienced Python developers screen samples, annotators flagged 38.3% of the reviewed samples as underspecified [[2]](#ref-2). A model that fails those tasks is not necessarily weak. It may simply lack information that was never provided.
+
+**The control:** every task gets a written brief that states the goal, the inputs and the acceptance criteria before any solution is written. A second expert who did not author the task must be able to solve it from the brief alone. If they cannot, the brief is rewritten, not the solution.
+
+## Failure mode 2: the tests are unfair
+
+A test is unfair when it rejects valid solutions. Overly specific unit tests are the classic case: they check a function name, an exact error string or one implementation path, when the task allowed several.
+
+In the same SWE-bench review, annotators flagged 61.1% of samples for unit tests that could reject correct solutions [[2]](#ref-2). Across all issues, OpenAI filtered out 68.3% of the samples it annotated, and released the remaining 500 as SWE-bench Verified [[2]](#ref-2). That is a large share of a widely used benchmark, and it shows how much hidden noise an unreviewed test suite can carry.
+
+**The control:** treat the verifier as a deliverable in its own right.
+
+- Write a reference solution, then write at least one alternative valid solution and confirm the verifier accepts both.
+- Test behaviour, not implementation details.
+- Run the verifier against known wrong answers to confirm it fails them for the right reason.
+- Record why each test exists, so reviewers can challenge it.
+
+## Failure mode 3: the benchmark has leaked
+
+Contamination happens when benchmark items, or close paraphrases of them, end up in a model's training data. The model then scores well by recall rather than reasoning.
+
+A 2024 survey by Xu and colleagues groups detection methods into matching-based approaches, such as n-gram overlap and membership inference, and comparison-based approaches that look at model behaviour, such as perplexity or performance on data from different time periods [[3]](#ref-3). Its mitigations fall into three families: curating new data, including private and dynamic benchmarks; refactoring existing benchmarks through regeneration and filtering; and benchmark-free evaluation. The survey's conclusion is sobering: contamination risk cannot be fully eliminated [[3]](#ref-3).
+
+**The control:** design for contamination from the start.
+
+- Author original tasks rather than adapting public ones.
+- Keep a private held-out split that never leaves controlled storage.
+- Refresh the benchmark on a schedule, the idea behind dynamic benchmarks such as Dynabench, which keeps humans in the loop to write new, harder examples over time [[4]](#ref-4).
+- Log provenance for every task: who wrote it, from what source, and when.
+
+## What a trustworthy task looks like
+
+Terminal-Bench is a useful reference point for hard, realistic tasks. Version 2.0 contains 89 tasks set in command-line environments inspired by real workflows, each with its own environment, a human-written reference solution and comprehensive tests [[5]](#ref-5). Frontier models and agents score below 65% on it [[5]](#ref-5), which is what you want from a benchmark meant to separate strong systems from very strong ones.
+
+We use a simple checklist for every task we deliver:
+
+| Component | What it must contain |
+|---|---|
+| `instruction.md` | Goal, inputs, expected output, acceptance criteria |
+| Environment | A reproducible container that builds the same way every time |
+| Reference solution | Written and run by the author, then re-run by a reviewer |
+| Verifier | Tests that accept every valid answer and fail known wrong ones |
+| Review notes | Who checked it, what changed, and why it passed |
+
+## The short version
+
+Benchmarks fail quietly. The fixes are not glamorous: clearer briefs, fairer tests, private splits and a second pair of expert eyes on every task. That review step is the difference between a number and a measurement.
+
+If you are building or auditing an evaluation set, our [quality process](../index.html#quality) is built around exactly these checks, and our [sample tasks](../sample-tasks.html) show what the files look like in practice.
+
+## References
+
+1. Jimenez, C. E., et al. (2023). *SWE-bench: Can Language Models Resolve Real-World GitHub Issues?* ICLR 2024. [arXiv:2310.06770](https://arxiv.org/abs/2310.06770)
+2. OpenAI (2024). *Introducing SWE-bench Verified.* [openai.com](https://openai.com/index/introducing-swe-bench-verified/)
+3. Xu, C., Guan, S., Greene, D., and Kechadi, M-T. (2024). *Benchmark Data Contamination of Large Language Models: A Survey.* [arXiv:2406.04244](https://arxiv.org/abs/2406.04244)
+4. Kiela, D., et al. (2021). *Dynabench: Rethinking Benchmarking in NLP.* NAACL 2021. [arXiv:2104.14337](https://arxiv.org/abs/2104.14337)
+5. Merrill, M. A., et al. (2026). *Terminal-Bench: Benchmarking Agents on Hard, Realistic Tasks in Command Line Interfaces.* [arXiv:2601.11868](https://arxiv.org/abs/2601.11868)
+
+
+---
+
+# RLHF and preference data, explained for teams that collect it
+
+> Reinforcement learning from human feedback is only as good as the comparisons behind it. What to collect, who should collect it, and how DPO changes the pipeline.
+
+Published 2026-10-24 by the Latryn Research Team. Canonical: https://latryn.com/blog/rlhf-preference-data-guide.html
+
+## Key takeaways
+
+- RLHF turns human comparisons between model outputs into a training signal, usually through a reward model.
+- Small amounts of well-chosen feedback go a long way: early RLHF work trained agents with feedback on less than one percent of their interactions.
+- In InstructGPT, a 1.3B model trained with human feedback was preferred over the 175B GPT-3.
+- DPO removes the separate reward model, but it still needs the same high-quality preference pairs.
+
+Most of what makes a modern assistant feel helpful happens after pre-training. Post-training teaches a model which of many plausible answers people actually want. The raw material for that step is preference data: humans comparing outputs and saying which is better, and why.
+
+This guide explains how the main methods use that data and what it means for the people who produce it.
+
+## Where RLHF came from
+
+The core idea predates large language models. In 2017, Christiano and colleagues showed that agents could learn complex behaviours from human judgements about which of two short clips was better, rather than from a hand-written reward function [[1]](#ref-1). Their agents needed human feedback on less than one percent of their interactions with the environment [[1]](#ref-1). The lesson that carried forward: people are far better at comparing outcomes than at specifying them.
+
+## The InstructGPT recipe
+
+OpenAI's InstructGPT work set the template most teams still recognise [[2]](#ref-2):
+
+1. **Demonstrations.** Labelers write examples of the desired behaviour, and the model is fine-tuned on them with supervised learning.
+2. **Comparisons.** Labelers rank several model outputs for the same prompt.
+3. **Reinforcement learning.** A reward model trained on those rankings guides further fine-tuning.
+
+The headline result is still striking. In human evaluations, outputs from a 1.3B parameter InstructGPT model were preferred to those of the 175B GPT-3, despite having roughly 100 times fewer parameters [[2]](#ref-2). Better data and better objectives beat raw scale.
+
+Anthropic's work on helpful and harmless assistants applied the same approach and collected preference data specifically for both helpfulness and harmlessness, studying how the two interact [[3]](#ref-3).
+
+## DPO: same data, simpler pipeline
+
+Direct Preference Optimization, introduced by Rafailov and colleagues in 2023, showed that the reward model can be folded into the policy itself, so the standard RLHF objective can be optimised with a simple classification loss on preference pairs [[4]](#ref-4). That removes the separate reward model and the reinforcement learning loop.
+
+DPO changes the engineering, not the inputs. It still needs pairs of responses with a reliable judgement about which is better. If anything, it makes data quality more visible, because there is no reward model in between to absorb noise.
+
+## What good preference data looks like
+
+The methods differ, but the data requirements are shared:
+
+- **Comparisons a domain expert would agree with.** A preference on a chemistry answer is only useful if the person judging it knows chemistry.
+- **A rationale for each judgement.** Short written reasons let reviewers audit decisions and catch rater drift.
+- **Calibrated guidelines.** Raters need worked examples of edge cases: two good answers, two bad answers, an answer that is correct but unsafe.
+- **Agreement measured, not assumed.** Overlap a share of items across raters and track agreement over time.
+- **Coverage, not just volume.** Prompts should span the capabilities and failure modes the model will meet in use.
+
+## Common failure modes
+
+| Problem | What it looks like | Fix |
+|---|---|---|
+| Length bias | Raters reward longer answers by default | Guidelines that score substance, with short "better" examples |
+| Surface fluency | Confident but wrong answers win | Domain experts and a factual check step |
+| Rater drift | Standards shift over weeks | Recurring calibration sets with known answers |
+| Narrow prompts | Model improves on the training mix only | Prompt sets designed for coverage |
+
+## Who should do the comparing
+
+For general conversational quality, trained generalists can do excellent work. For code, maths, science, law and medicine, the comparison is a technical judgement, and it needs someone who can verify the answer rather than admire it. That is why we match preference work to specialists and keep a senior reviewer on borderline items.
+
+Read more about [how we vet experts](expert-vs-crowd-annotation.html), or see how our [Train practice](../index.html#build) packages SFT, RLHF and preference data.
+
+## References
+
+1. Christiano, P., et al. (2017). *Deep Reinforcement Learning from Human Preferences.* NeurIPS 2017. [arXiv:1706.03741](https://arxiv.org/abs/1706.03741)
+2. Ouyang, L., et al. (2022). *Training Language Models to Follow Instructions with Human Feedback.* NeurIPS 2022. [arXiv:2203.02155](https://arxiv.org/abs/2203.02155)
+3. Bai, Y., et al. (2022). *Training a Helpful and Harmless Assistant with Reinforcement Learning from Human Feedback.* [arXiv:2204.05862](https://arxiv.org/abs/2204.05862)
+4. Rafailov, R., et al. (2023). *Direct Preference Optimization: Your Language Model is Secretly a Reward Model.* NeurIPS 2023. [arXiv:2305.18290](https://arxiv.org/abs/2305.18290)
+
+
+---
+
+# How to build agent environments that test real work
+
+> Docker images, terminal tasks and verifiers: a practical anatomy of the environments used to train and evaluate AI agents.
+
+Published 2026-10-24 by the Latryn Research Team. Canonical: https://latryn.com/blog/building-agent-environments.html
+
+## Key takeaways
+
+- An agent environment has four parts: a brief, a reproducible container, a reference solution and a verifier.
+- Agents fail on long, multi-step work, so environments should test sequences of actions, not single answers.
+- Reproducibility is a quality issue: environments that build differently produce failures unrelated to the agent.
+- The verifier decides what the benchmark measures, so it deserves the most review.
+
+A chat benchmark asks a model for an answer. An agent environment asks it to do something: run commands, edit files, call tools and check its own work. That shift changes what good evaluation and training data looks like.
+
+## Why agents need environments, not prompts
+
+AgentBench, published in 2023, evaluated language models as agents across eight distinct environments, from operating systems and databases to web tasks [[1]](#ref-1). The authors found that top commercial models performed well, while many open models of 70B parameters or fewer fell well behind, and identified weak long-horizon reasoning, decision-making and instruction following as the main obstacles [[1]](#ref-1). Those are exactly the skills a single-turn prompt cannot test.
+
+SWE-bench made the same point for software engineering by asking models to resolve real GitHub issues inside real repositories. When it launched, the best model resolved only 1.96% of the 2,294 issues [[2]](#ref-2). Terminal-Bench 2.0 extends the idea to 89 hard command-line tasks, each with its own environment and tests, where frontier systems still score below 65% [[3]](#ref-3).
+
+## Anatomy of a good environment
+
+```
+task-0417/
+  instruction.md        goal, inputs, acceptance criteria
+  task.toml             language, domain, difficulty, time limit
+  environment/
+    Dockerfile          pinned base image and dependencies
+  fixtures/             input files the agent must handle
+  solution/
+    solve.sh            human-written reference solution
+  tests/
+    verifier.py         checks the end state, not the steps
+  review/
+    notes.md            who reviewed it and what changed
+```
+
+### 1. The brief
+The instruction states the goal and the acceptance criteria in plain language. It does not hint at the solution, and it does not hide requirements in the tests.
+
+### 2. The container
+Pin everything: base image digest, package versions, data files. An environment that builds differently on Tuesday produces failures that have nothing to do with the agent. OpenAI listed hard-to-set-up development environments as one of the reasons it re-annotated SWE-bench [[4]](#ref-4).
+
+### 3. The reference solution
+A human writes and runs a full solution inside the container. If the author cannot solve it reliably in the environment provided, neither can the agent, and the task is broken.
+
+### 4. The verifier
+The verifier checks the final state of the system: files, outputs, service behaviour. It should accept any valid approach and fail known wrong ones. Because it defines what success means, it gets the most scrutiny at review.
+
+## Designing tasks that agents actually fail
+
+Hard tasks are not obscure tasks. The most useful ones come from real workflows and require several dependent steps:
+
+- Diagnosing a failing build, fixing it and proving the fix with tests.
+- Migrating data between formats while preserving edge cases.
+- Configuring a service so another program can use it.
+- Recovering from a partially broken state left by a previous step.
+
+Each step should be checkable, and failure partway through should be visible in the end state.
+
+## Review before release
+
+Before any environment ships, a second engineer rebuilds it from scratch, solves it from the brief, runs the verifier against the reference solution and an alternative solution, and tries at least one plausible wrong answer. Anything that fails goes back to the author with notes.
+
+Browse our [sample tasks](../sample-tasks.html) to see this structure, or read [what makes a benchmark trustworthy](trustworthy-ai-benchmarks.html).
+
+## References
+
+1. Liu, X., et al. (2023). *AgentBench: Evaluating LLMs as Agents.* ICLR 2024. [arXiv:2308.03688](https://arxiv.org/abs/2308.03688)
+2. Jimenez, C. E., et al. (2023). *SWE-bench: Can Language Models Resolve Real-World GitHub Issues?* ICLR 2024. [arXiv:2310.06770](https://arxiv.org/abs/2310.06770)
+3. Merrill, M. A., et al. (2026). *Terminal-Bench: Benchmarking Agents on Hard, Realistic Tasks in Command Line Interfaces.* [arXiv:2601.11868](https://arxiv.org/abs/2601.11868)
+4. OpenAI (2024). *Introducing SWE-bench Verified.* [openai.com](https://openai.com/index/introducing-swe-bench-verified/)
+
+
+---
+
+# Quality over quantity in fine-tuning data
+
+> The research case for smaller, cleaner, expert-written datasets, and a practical checklist for getting there.
+
+Published 2026-10-24 by the Latryn Research Team. Canonical: https://latryn.com/blog/quality-over-quantity-training-data.html
+
+## Key takeaways
+
+- LIMA fine-tuned a 65B model on only 1,000 curated examples and was judged equivalent or better than GPT-4 in 43% of comparisons.
+- Duplicated data harms models: deduplicated training data cut memorised output by about ten times.
+- Carefully constructed, textbook-quality data can let small models compete above their size.
+- The bottleneck is not collecting more examples. It is writing, checking and pruning better ones.
+
+It is tempting to treat training data as a volume problem: more examples, more coverage, better model. For supervised fine-tuning in particular, the evidence points the other way. A small set of excellent examples often beats a large set of average ones.
+
+## The LIMA result
+
+In 2023, Zhou and colleagues fine-tuned a 65B parameter LLaMa model on only 1,000 carefully curated prompts and responses, with no reinforcement learning or human preference modelling [[1]](#ref-1). In a human study, its responses were either equivalent or strictly preferred to GPT-4 in 43% of cases [[1]](#ref-1).
+
+The authors' interpretation, sometimes called the superficial alignment hypothesis, is that most knowledge is learned in pre-training and fine-tuning mainly teaches format and style. Whether or not that holds in every domain, the practical point stands: a thousand examples written with care can move a model a long way.
+
+## Duplicates are not free
+
+Large datasets hide repetition. Lee and colleagues found a single 61-word English sentence repeated more than 60,000 times in the C4 dataset [[2]](#ref-2). Training on deduplicated data meant models emitted memorised text about ten times less often [[2]](#ref-2). Repetition wastes compute, skews what the model treats as typical, and raises the chance of verbatim regurgitation.
+
+## Textbook-quality data
+
+Gunasekar and colleagues pushed the quality argument further with a code model trained largely on carefully constructed, "textbook quality" data, showing strong results from a model far smaller than its competitors [[3]](#ref-3). The design choice that mattered was not the amount of data but how instructive each example was.
+
+## A practical checklist for SFT data
+
+When we write or audit supervised fine-tuning sets, each example has to pass these checks:
+
+1. **Correct.** A second expert can verify the answer, and code runs.
+2. **Complete.** It answers the whole prompt, including the part that is easy to skip.
+3. **Instructive.** Reasoning is shown where the task needs it, not padded where it does not.
+4. **Consistent.** Style, format and refusals follow one written guideline.
+5. **Unique.** Near-duplicates are removed with exact and fuzzy matching.
+6. **Traceable.** Every example records its author, reviewer and revision history.
+
+## What to measure instead of row count
+
+| Instead of | Track |
+|---|---|
+| Number of examples | Share of examples that pass expert review first time |
+| Hours logged | Defects found per hundred items at review |
+| Coverage claims | Coverage against a written capability map |
+| One-off QA | Agreement on a recurring calibration set |
+
+## The takeaway
+
+The cheapest way to improve a fine-tuned model is often to delete a third of its training data and rewrite another third. That work needs people who know the domain well enough to tell a good answer from a plausible one.
+
+See how our [Train practice](../index.html#build) handles SFT and chain-of-thought data, or read about [preference data for RLHF and DPO](rlhf-preference-data-guide.html).
+
+## References
+
+1. Zhou, C., et al. (2023). *LIMA: Less Is More for Alignment.* NeurIPS 2023. [arXiv:2305.11206](https://arxiv.org/abs/2305.11206)
+2. Lee, K., et al. (2022). *Deduplicating Training Data Makes Language Models Better.* ACL 2022. [arXiv:2107.06499](https://arxiv.org/abs/2107.06499)
+3. Gunasekar, S., et al. (2023). *Textbooks Are All You Need.* [arXiv:2306.11644](https://arxiv.org/abs/2306.11644)
+
+
+---
+
+# Expert or crowd? Measuring quality in human data collection
+
+> When crowd labels are enough, when you need specialists, and how to measure annotation quality instead of assuming it.
+
+Published 2026-10-24 by the Latryn Research Team. Canonical: https://latryn.com/blog/expert-vs-crowd-annotation.html
+
+## Key takeaways
+
+- For simple tasks, a few non-expert labels can match an expert: one classic study needed about four per item.
+- For technical tasks, the judgement itself requires expertise, and aggregation cannot replace it.
+- Measure agreement with chance-corrected statistics, not raw percent agreement.
+- Vetting, calibration and senior review are what turn a group of annotators into a reliable data source.
+
+Every AI data project eventually faces the same question: do we need experts, or will a larger crowd do? The honest answer depends on the task. The research gives a useful way to decide.
+
+## When crowds work
+
+In 2008, Snow, O'Connor, Jurafsky and Ng compared non-expert annotations from a crowdsourcing platform with expert labels across five language tasks: affect recognition, word similarity, recognising textual entailment, event temporal ordering and word sense disambiguation [[1]](#ref-1). They found that, on average, about four non-expert labels per item were needed to emulate expert-level label quality [[1]](#ref-1).
+
+That result is still widely cited because it is so practical. For tasks where an average person can judge the answer, several cheap labels combined can rival one expert.
+
+## When they do not
+
+The finding has a boundary. Aggregating votes works when each voter can recognise a correct answer. It fails when the judgement itself needs expertise: whether a proof step is valid, whether a patch introduces a race condition, whether a dosage is safe. Ten people who cannot verify an answer do not become one person who can.
+
+Modern AI training and evaluation tasks increasingly sit on the expert side of that line. When OpenAI re-annotated SWE-bench, it used 93 software developers experienced in Python, labelled each sample three times and kept the highest-severity label [[2]](#ref-2). The task needed engineers, and it needed redundancy among engineers.
+
+## Measure agreement properly
+
+Percent agreement looks reassuring but ignores chance. If 90% of items belong to one class, two careless annotators will agree most of the time. Artstein and Poesio's survey for computational linguistics explains chance-corrected coefficients such as kappa and alpha and when each is appropriate [[3]](#ref-3).
+
+In practice we recommend:
+
+- Overlap a fixed share of items across annotators throughout the project, not only at the start.
+- Report a chance-corrected agreement statistic per task type.
+- Investigate disagreements before resolving them. They often reveal unclear guidelines rather than careless work.
+- Keep a calibration set with known answers and re-run it regularly to catch drift.
+
+## A decision guide
+
+| Task | Typical approach |
+|---|---|
+| Sentiment, simple classification | Trained generalists with redundant labels |
+| Factual QA in general knowledge | Generalists plus expert spot checks |
+| Code, maths, science reasoning | Domain experts, independent review |
+| Safety and red teaming | Domain specialists matched to each harm area |
+| Benchmark authoring | Experts who write, solve and verify every task |
+
+## What vetting should look like
+
+Expertise claimed on a CV is not expertise demonstrated. A useful admission process tests the actual work: solving representative tasks, judging flawed examples and explaining decisions. At Latryn every expert in the Lattice passes a two-part timed assessment, an automatically scored technical section and a scenario section reviewed by our team, before they work on client data.
+
+Read more about [quality over quantity in training data](quality-over-quantity-training-data.html), or [join the Lattice](../index.html#lattice) if you are a specialist.
+
+## References
+
+1. Snow, R., O'Connor, B., Jurafsky, D., and Ng, A. Y. (2008). *Cheap and Fast, But is it Good? Evaluating Non-Expert Annotations for Natural Language Tasks.* EMNLP 2008. [ACL Anthology D08-1027](https://aclanthology.org/D08-1027/)
+2. OpenAI (2024). *Introducing SWE-bench Verified.* [openai.com](https://openai.com/index/introducing-swe-bench-verified/)
+3. Artstein, R., and Poesio, M. (2008). *Inter-Coder Agreement for Computational Linguistics.* Computational Linguistics 34(4). [ACL Anthology J08-4004](https://aclanthology.org/J08-4004/)
+
+
+---
+
+# Red teaming language models: methods and lessons
+
+> What the research says about finding failures before users do, and how to run adversarial testing that produces usable training data.
+
+Published 2026-10-24 by the Latryn Research Team. Canonical: https://latryn.com/blog/red-teaming-language-models.html
+
+## Key takeaways
+
+- Red teaming means deliberately trying to make a model fail, then using those failures to fix it.
+- Anthropic released 38,961 red team attacks and found RLHF models became harder to red team as they grew larger.
+- Language models can generate test cases automatically, which complements human red teamers.
+- Every attack is only useful if it is labelled, reproducible and fed back into training or evaluation.
+
+Red teaming borrows its name from security exercises: a team plays the adversary so weaknesses are found in testing rather than in the field. For language models, that means crafting inputs designed to elicit harmful, false or policy-breaking outputs, then turning what you find into fixes.
+
+## What large-scale human red teaming showed
+
+In 2022, Ganguli and colleagues at Anthropic red teamed models of three sizes, 2.7B, 13B and 52B parameters, across four types: a plain language model, a prompted helpful, honest and harmless model, a model using rejection sampling, and a model trained with RLHF [[1]](#ref-1). They released a dataset of 38,961 red team attacks for others to study [[1]](#ref-1).
+
+Their main scaling finding: RLHF models became increasingly difficult to red team as they scaled, while the other model types showed roughly flat trends [[1]](#ref-1). Training on human feedback does not just change behaviour on normal prompts. It changes how robust a model is under pressure.
+
+## Models testing models
+
+Human red teaming is expensive and slow to scale. Perez and colleagues showed that one language model can generate test cases that expose failures in another, uncovering tens of thousands of offensive replies from a chatbot built on a 280 billion parameter language model [[2]](#ref-2). Automated generation is good at breadth. Human experts are still better at depth: realistic misuse, subtle harms and domain-specific risks.
+
+The strongest programs combine both. Models generate wide coverage, and specialists probe the areas where a mistake would matter most.
+
+## Running a red team program
+
+1. **Define the harms.** Write a taxonomy before testing starts, with examples and severity levels for each category.
+2. **Choose the testers.** Match domain experts to domain risks: security people for exploit requests, clinicians for medical misinformation.
+3. **Record everything.** Each attack logs the prompt, the full conversation, the model version, the outcome and a severity label.
+4. **Review labels.** A second reviewer checks severity and category on a sample of attacks, and all borderline ones.
+5. **Close the loop.** Confirmed failures become training data, evaluation items or both, and are re-tested on the next model version.
+
+## What makes a red team finding useful
+
+| Weak finding | Useful finding |
+|---|---|
+| "The model said something bad" | Exact conversation, model version, category and severity |
+| One-off screenshot | Reproducible prompt that fails consistently |
+| Unlabelled | Labelled against a written harm taxonomy |
+| Reported once | Added to a regression set and re-tested |
+
+## The takeaway
+
+Red teaming is not a one-time audit. It is a data pipeline that turns adversarial creativity into labelled, reproducible examples a model can learn from and be measured against.
+
+Our [Review practice](../index.html#build) runs adversarial testing alongside technical QA. You may also want to read about [preference data for RLHF](rlhf-preference-data-guide.html).
+
+## References
+
+1. Ganguli, D., et al. (2022). *Red Teaming Language Models to Reduce Harms: Methods, Scaling Behaviors, and Lessons Learned.* [arXiv:2209.07858](https://arxiv.org/abs/2209.07858)
+2. Perez, E., et al. (2022). *Red Teaming Language Models with Language Models.* EMNLP 2022. [arXiv:2202.03286](https://arxiv.org/abs/2202.03286)

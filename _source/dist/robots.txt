@@ -1,0 +1,25 @@
+# Latryn welcomes search engines and AI assistants.
+User-agent: *
+Allow: /
+
+# AI crawlers and assistants (explicitly allowed for answer-engine visibility)
+User-agent: GPTBot
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: Claude-User
+Allow: /
+User-agent: Claude-SearchBot
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://latryn.com/sitemap.xml
+# Site guide for language models: https://latryn.com/llms.txt
+# Guide for AI agents acting for a user: https://latryn.com/agents.txt
