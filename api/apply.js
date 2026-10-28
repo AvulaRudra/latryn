@@ -206,7 +206,15 @@ async function graph(c, method, path, body) {
   });
   if (r.status === 202 || r.status === 204) return {};
   const text = await r.text();
-  if (!r.ok) throw new Error(`Graph ${method} ${path} failed: ${r.status} ${text.slice(0, 300)}`);
+  if (!r.ok) {
+    /* 401/403 means Azure gave a token without the right permission: log what it does have */
+    let roles = "";
+    if (r.status === 401 || r.status === 403) {
+      try { roles = " | app permissions in token: " + (JSON.parse(Buffer.from(cachedToken.value.split(".")[1], "base64url")).roles || ["none"]).join(", "); } catch (e) {}
+      cachedToken = null;  // fetch a fresh token next time, in case consent was just granted
+    }
+    throw new Error(`Graph ${method} ${path} failed: ${r.status} ${text.slice(0, 300)}${roles}`);
+  }
   return text ? JSON.parse(text) : {};
 }
 
