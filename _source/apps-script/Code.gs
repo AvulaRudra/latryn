@@ -19,6 +19,17 @@ var CONFIG = {
   MAX_BYTES: 10 * 1024 * 1024
 };
 
+/* Script Properties (Project Settings > Script Properties) override the values above, so the
+   email addresses can change without editing code: TEAM_EMAIL, REPLY_TO, SENDER_NAME, SITE_URL.
+   Set TEAM_EMAIL to "none" to stop team notifications. */
+(function () {
+  var props = PropertiesService.getScriptProperties();
+  ['TEAM_EMAIL', 'REPLY_TO', 'SENDER_NAME', 'SITE_URL'].forEach(function (k) {
+    var v = props.getProperty(k);
+    if (v != null && v.trim() !== '') CONFIG[k] = v.trim() === 'none' ? '' : v.trim();
+  });
+})();
+
 var OPTIONS = {
   qualification: ['Diploma', 'Bachelors', 'Masters', 'PhD'],
   stream: ['Science', 'Commerce', 'Arts', 'Engineering', 'Other'],

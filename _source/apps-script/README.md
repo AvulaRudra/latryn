@@ -13,7 +13,16 @@ Emails are sent from the Google account that deploys the script. Deploy it from 
 1. Create a new Google Sheet, for example "Latryn Lattice applications".
 2. In the sheet, open **Extensions > Apps Script**.
 3. Delete the starter code, paste in everything from `Code.gs`, and save.
-4. Check the `CONFIG` block at the top (team email, reply-to address).
+4. Set the email addresses. Either edit the `CONFIG` block at the top of the code, or (no code edits) open **Project Settings** (gear icon) > **Script Properties** and add any of:
+
+   | Property | What it does | Default |
+   |---|---|---|
+   | `TEAM_EMAIL` | Gets a notification for every application. `none` turns it off | `contact@latryn.com` |
+   | `REPLY_TO` | Where applicant replies to the confirmation go | `contact@latryn.com` |
+   | `SENDER_NAME` | The "from" name on the confirmation | `Latryn` |
+   | `SITE_URL` | Used for the link in the confirmation | `https://latryn.com` |
+
+   These are Google's equivalent of Vercel environment variables. Vercel can't set them, because the emails are sent by Google, not by the website. The actual "from" address is always the Google account that deploys the script. Changes apply to the next application, with no redeploy.
 5. In the function menu choose **setup** and click **Run**. Approve the permissions (Sheets, Drive, send email). This creates the Applications tab and the resumes folder.
 6. Click **Deploy > New deployment**, choose type **Web app**:
    - Execute as: **Me**
