@@ -21,7 +21,7 @@ const OPTIONS = {
   qualification: ["Diploma", "Bachelors", "Masters", "PhD"],
   stream: ["Science", "Commerce", "Arts", "Engineering", "Other"],
   availability: ["Part-time", "Full-time", "Weekends only"],
-  work: ["Writing / Content", "Design", "Development", "Data / Research", "Teaching / Tutoring", "Other"],
+  work: ["SFT (supervised fine-tuning)", "RLHF and preference ranking", "Red teaming", "Evaluations and benchmarks", "Agent environments", "Video and egocentric annotation", "Coding tasks"],
   specialization: [
     "Physical Sciences (Physics, Chemistry, Astronomy, Earth Sciences)",
     "Life Sciences (Biology, Zoology, Botany, Genetics, Ecology)",

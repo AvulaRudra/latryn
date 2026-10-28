@@ -9,7 +9,7 @@ home = open(os.path.join(ROOT, 'index_template.html'), encoding='utf-8').read()
 home = home.replace('{{LOGO}}', bp.LOGO).replace('https://YOUR-DOMAIN.com', bp.BASE_URL)
 open(os.path.join(OUT, 'index.html'), 'w', encoding='utf-8').write(home)
 shutil.copytree(os.path.join(ROOT, 'assets'), os.path.join(OUT, 'assets'))
-for f in ['favicon.svg', 'og-image-1200x630.png', 'AGENTS.md']:
+for f in ['favicon.svg', 'favicon.ico', 'apple-touch-icon.png', 'icon-192.png', 'icon-512.png', 'site.webmanifest', 'og-image-1200x630.png', 'AGENTS.md']:
     shutil.copy(os.path.join(ROOT, f), os.path.join(OUT, f))
 # write the contact email into every data-email link so it works without JavaScript too
 import re, glob
