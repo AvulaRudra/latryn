@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Red teaming language models: methods and lessons | Latryn</title>
+<meta name="description" content="What the research says about finding failures before users do, and how to run adversarial testing that produces usable training data.">
+<link rel="canonical" href="https://latryn.com/blog/red-teaming-language-models.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Latryn">
+<meta property="og:title" content="Red teaming language models: methods and lessons | Latryn">
+<meta property="og:description" content="What the research says about finding failures before users do, and how to run adversarial testing that produces usable training data.">
+<meta property="og:url" content="https://latryn.com/blog/red-teaming-language-models.html">
+<meta property="og:image" content="https://latryn.com/og-image-1200x630.png">
+<meta name="twitter:card" content="summary_large_image">
+<script>document.documentElement.classList.add("js")</script>
+<meta name="theme-color" content="#f5f2ec">
+<link rel="icon" href="../favicon.ico" sizes="any"><link rel="icon" href="../favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="../apple-touch-icon.png"><link rel="manifest" href="../site.webmanifest">
+<link rel="alternate" type="text/plain" title="LLM site guide" href="../llms.txt">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Schibsted+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/vendor/lenis.css">
+<link rel="stylesheet" href="../assets/latryn.css">
+<meta name="keywords" content="red teaming LLM, adversarial testing, AI safety evaluation, jailbreak testing, red team dataset"><meta property="article:published_time" content="2026-10-24"><link rel="alternate" type="text/markdown" href="red-teaming-language-models.md"><script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Red teaming language models: methods and lessons", "description": "What the research says about finding failures before users do, and how to run adversarial testing that produces usable training data.", "datePublished": "2026-10-24", "dateModified": "2026-10-24", "author": {"@type": "Organization", "name": "Latryn Research Team"}, "publisher": {"@type": "Organization", "name": "Latryn", "url": "https://latryn.com/", "logo": "https://latryn.com/icon-512.png", "sameAs": ["https://www.linkedin.com/company/latryn"]}, "mainEntityOfPage": "https://latryn.com/blog/red-teaming-language-models.html", "image": "https://latryn.com/og-image-1200x630.png", "keywords": "red teaming LLM, adversarial testing, AI safety evaluation, jailbreak testing, red team dataset", "articleSection": "Safety", "wordCount": 531, "abstract": "Red teaming means deliberately trying to make a model fail, then using those failures to fix it. Anthropic released 38,961 red team attacks and found RLHF models became harder to red team as they grew larger. Language models can generate test cases automatically, which complements human red teamers. Every attack is only useful if it is labelled, reproducible and fed back into training or evaluation.", "citation": [{"@type": "ScholarlyArticle", "name": "Ganguli, D., et al. (2022). Red Teaming Language Models to Reduce Harms: Methods, Scaling Behaviors, and Lessons Learned.", "url": "https://arxiv.org/abs/2209.07858"}, {"@type": "ScholarlyArticle", "name": "Perez, E., et al. (2022). Red Teaming Language Models with Language Models. EMNLP 2022.", "url": "https://arxiv.org/abs/2202.03286"}]}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://latryn.com/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://latryn.com/blog/"}, {"@type": "ListItem", "position": 3, "name": "Red teaming language models: methods and lessons", "item": "https://latryn.com/blog/red-teaming-language-models.html"}]}</script>
+<script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};</script>
+<script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="progress" aria-hidden="true"></div><header class="nav" id="nav"><nav class="nav-in" aria-label="Main">
+<a href="../index.html" class="logo" aria-label="Latryn home"><svg viewBox="0 0 292 94" width="87" height="28" aria-hidden="true"><g transform="translate(1 -8.0) scale(0.1)"><path transform="translate(0 800.0) scale(1 -1)" d="M54 0V726H207V0Z" fill="currentColor"/><path transform="translate(241 800.0) scale(1 -1)" d="M257 -10Q190 -10 137.25 23.0Q84.5 56 54.25 113.0Q24 170 24 242.5Q24 315.5 54.25 372.75Q84.5 430 137.25 463.0Q190 496 257 496Q306 496 345.5 477.0Q385 458 409.75 424.5Q434.5 391 438 348V138Q434.5 95 410.0 61.5Q385.5 28 345.75 9.0Q306 -10 257 -10ZM288 128Q337 128 367.0 160.25Q397 192.5 397 243Q397 277 383.5 302.75Q370 328.5 345.5 343.25Q321 358 288.5 358Q256.5 358 232.0 343.25Q207.5 328.5 193.25 302.5Q179 276.5 179 243Q179 209.5 193.0 183.5Q207 157.5 231.75 142.75Q256.5 128 288 128ZM390.5 0V130.5L413.5 249L390.5 366.5V486H541V0Z" fill="currentColor"/><path transform="translate(816 800.0) scale(1 -1)" d="M123 0V687H276V0ZM13 356V486H386V356Z" fill="currentColor"/><path transform="translate(1195 800.0) scale(1 -1)" d="M54 0V486H207V0ZM207 266.5 142.5 316.5Q161.5 402 206.99693251533742 449.0Q252.49386503067484 496 331.5 496Q366.5 496 393.25 485.5Q420 475 440 453L349 338Q339 349 324.19444444444446 354.75Q309.3888888888889 360.5 290 360.5Q252 360.5 229.5 337.125786163522Q207 313.751572327044 207 266.5Z" fill="currentColor"/><path transform="translate(1619 800.0) scale(1 -1)" d="M203.5 -2.5 4 486H168.5L295.5 98.5H235L365 486H529.5L321.5 -2.5ZM78.5 -205 224.5 110 321.5 -2.5 235.5 -205Z" fill="currentColor"/><path transform="translate(2133 800.0) scale(1 -1)" d="M375 0V276.5Q375 315 351.5 338.25Q328 361.5 291.6224489795918 361.5Q266.8724489795918 361.5 247.6862244897959 351.0Q228.5 340.5 217.75 321.25Q207 302 207 276.5L147.5 305.5Q147.5 363 172.75 405.75Q198 448.5 242.44796954314722 472.25Q286.89593908629445 496 343.1979695431472 496Q396.5 496 438.25 470.5Q480 445 504.0 403.0Q528 361 528 311V0ZM54 0V486H207V0Z" fill="currentColor"/><rect x="2750" y="647.0" width="153" height="153" class="ldot"/></g></svg></a>
+<div class="nav-links"><a href="../index.html#egocentric">Egocentric</a><a href="../index.html#build">Services</a><a href="../index.html#quality">Quality</a><a href="../sample-tasks.html">Sample tasks</a><a href="../blog/index.html" aria-current="page">Blog</a><a href="../index.html#lattice">Careers</a><a class="ico" data-social="discord" href="https://discord.gg/FX8hXUmCE" aria-label="Join our Discord" title="Join our Discord"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M20.32 4.37a19.8 19.8 0 0 0-4.89-1.52.07.07 0 0 0-.08.04c-.21.38-.44.87-.61 1.25a18.27 18.27 0 0 0-5.49 0 12.64 12.64 0 0 0-.62-1.25.08.08 0 0 0-.08-.04 19.74 19.74 0 0 0-4.88 1.52.07.07 0 0 0-.03.03C.53 9.05-.32 13.58.1 18.06a.08.08 0 0 0 .03.06 19.9 19.9 0 0 0 5.99 3.03.08.08 0 0 0 .08-.03c.46-.63.87-1.3 1.23-1.99a.08.08 0 0 0-.04-.11 13.1 13.1 0 0 1-1.87-.89.08.08 0 0 1-.01-.13l.37-.29a.07.07 0 0 1 .08-.01c3.93 1.79 8.18 1.79 12.06 0a.07.07 0 0 1 .08.01l.37.29a.08.08 0 0 1 0 .13c-.6.35-1.22.64-1.88.89a.08.08 0 0 0-.04.11c.36.7.77 1.36 1.23 1.99a.08.08 0 0 0 .08.03 19.84 19.84 0 0 0 6-3.03.08.08 0 0 0 .03-.06c.5-5.18-.84-9.67-3.55-13.66a.06.06 0 0 0-.03-.03ZM8.02 15.33c-1.18 0-2.16-1.09-2.16-2.42 0-1.33.96-2.42 2.16-2.42 1.21 0 2.18 1.1 2.16 2.42 0 1.33-.96 2.42-2.16 2.42Zm7.97 0c-1.18 0-2.15-1.09-2.15-2.42 0-1.33.95-2.42 2.15-2.42 1.21 0 2.18 1.1 2.16 2.42 0 1.33-.95 2.42-2.16 2.42Z"/></svg></a></div>
+<a class="btn btn-ink" href="../index.html?type=Scope%20a%20program#contact" style="min-height:44px;padding:11px 18px;font-size:15px">Scope a program <span class="sq" aria-hidden="true"></span></a>
+</nav></header>
+<main id="main">
+<article class="narrow">
+<header class="article-head rv">
+<div class="crumbs"><a href="../index.html">Home</a> / <a href="index.html">Blog</a> / Safety</div>
+<h1 style="view-transition-name:t-red-teaming-language-models">Red teaming language models: methods and lessons<span class="dot"></span></h1>
+<p class="dek">What the research says about finding failures before users do, and how to run adversarial testing that produces usable training data.</p>
+<div class="byline"><span>Latryn Research Team</span><span><time datetime="2026-10-24">24 Oct 2026</time></span><span>7 min read</span><span>2 cited sources</span></div>
+</header>
+<aside class="tldr rv" aria-label="Key takeaways"><h2>Key takeaways</h2><ul><li>Red teaming means deliberately trying to make a model fail, then using those failures to fix it.</li><li>Anthropic released 38,961 red team attacks and found RLHF models became harder to red team as they grew larger.</li><li>Language models can generate test cases automatically, which complements human red teamers.</li><li>Every attack is only useful if it is labelled, reproducible and fed back into training or evaluation.</li></ul></aside>
+<div class="prose"><p>Red teaming borrows its name from security exercises: a team plays the adversary so weaknesses are found in testing rather than in the field. For language models, that means crafting inputs designed to elicit harmful, false or policy-breaking outputs, then turning what you find into fixes.</p>
+<h2>What large-scale human red teaming showed</h2>
+<p>In 2022, Ganguli and colleagues at Anthropic red teamed models of three sizes, 2.7B, 13B and 52B parameters, across four types: a plain language model, a prompted helpful, honest and harmless model, a model using rejection sampling, and a model trained with RLHF <sup><a href="#ref-1" aria-label="Reference 1">[1]</a></sup>. They released a dataset of 38,961 red team attacks for others to study <sup><a href="#ref-1" aria-label="Reference 1">[1]</a></sup>.</p>
+<p>Their main scaling finding: RLHF models became increasingly difficult to red team as they scaled, while the other model types showed roughly flat trends <sup><a href="#ref-1" aria-label="Reference 1">[1]</a></sup>. Training on human feedback does not just change behaviour on normal prompts. It changes how robust a model is under pressure.</p>
+<h2>Models testing models</h2>
+<p>Human red teaming is expensive and slow to scale. Perez and colleagues showed that one language model can generate test cases that expose failures in another, uncovering tens of thousands of offensive replies from a chatbot built on a 280 billion parameter language model <sup><a href="#ref-2" aria-label="Reference 2">[2]</a></sup>. Automated generation is good at breadth. Human experts are still better at depth: realistic misuse, subtle harms and domain-specific risks.</p>
+<p>The strongest programs combine both. Models generate wide coverage, and specialists probe the areas where a mistake would matter most.</p>
+<h2>Running a red team program</h2>
+<ol>
+<li><strong>Define the harms.</strong> Write a taxonomy before testing starts, with examples and severity levels for each category.</li>
+<li><strong>Choose the testers.</strong> Match domain experts to domain risks: security people for exploit requests, clinicians for medical misinformation.</li>
+<li><strong>Record everything.</strong> Each attack logs the prompt, the full conversation, the model version, the outcome and a severity label.</li>
+<li><strong>Review labels.</strong> A second reviewer checks severity and category on a sample of attacks, and all borderline ones.</li>
+<li><strong>Close the loop.</strong> Confirmed failures become training data, evaluation items or both, and are re-tested on the next model version.</li>
+</ol>
+<h2>What makes a red team finding useful</h2>
+<table>
+<thead>
+<tr>
+<th>Weak finding</th>
+<th>Useful finding</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"The model said something bad"</td>
+<td>Exact conversation, model version, category and severity</td>
+</tr>
+<tr>
+<td>One-off screenshot</td>
+<td>Reproducible prompt that fails consistently</td>
+</tr>
+<tr>
+<td>Unlabelled</td>
+<td>Labelled against a written harm taxonomy</td>
+</tr>
+<tr>
+<td>Reported once</td>
+<td>Added to a regression set and re-tested</td>
+</tr>
+</tbody>
+</table>
+<h2>The takeaway</h2>
+<p>Red teaming is not a one-time audit. It is a data pipeline that turns adversarial creativity into labelled, reproducible examples a model can learn from and be measured against.</p>
+<p>Our <a href="../index.html#build">Review practice</a> runs adversarial testing alongside technical QA. You may also want to read about <a href="rlhf-preference-data-guide.html">preference data for RLHF</a>.</p></div>
+<section class="cta-box rv" aria-label="Work with Latryn">
+<h2>Need data built to this standard?</h2>
+<p>Tell us the benchmark, task format or dataset you need. We agree scope and acceptance checks before any work starts.</p>
+<div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn btn-paper" href="../index.html?type=Scope%20a%20program#contact">Scope a program <span class="arr" aria-hidden="true">→</span></a><a class="btn" style="color:var(--raised);border-color:var(--tint)" href="../sample-tasks.html">See sample tasks</a></div>
+</section>
+<section class="refs prose" id="references" aria-label="References"><h2>References</h2><ol>
+<li><span id="ref-1"></span>Ganguli, D., et al. (2022). <em>Red Teaming Language Models to Reduce Harms: Methods, Scaling Behaviors, and Lessons Learned.</em> <a rel="noopener" target="_blank" href="https://arxiv.org/abs/2209.07858">arXiv:2209.07858</a></li>
+<li><span id="ref-2"></span>Perez, E., et al. (2022). <em>Red Teaming Language Models with Language Models.</em> EMNLP 2022. <a rel="noopener" target="_blank" href="https://arxiv.org/abs/2202.03286">arXiv:2202.03286</a></li>
+</ol></section>
+</article>
+<section class="wrap related"><h2>Keep reading<span class="dot"></span></h2><div class="posts stagger" style="padding-bottom:0"><a class="post-card " href="egocentric-data-collection.html"><span class="corner" aria-hidden="true"></span><span class="eyebrow">Egocentric data</span><h2 style="view-transition-name:t-egocentric-data-collection">Egocentric data collection for robotics and embodied AI</h2><p>Why first-person video matters for models that act in the world, what the major public datasets teach about scale and annotation, and what a capture program needs to get right.</p><span class="meta">9 min read · 4 sources</span></a><a class="post-card " href="trustworthy-ai-benchmarks.html"><span class="corner" aria-hidden="true"></span><span class="eyebrow">Evaluation</span><h2 style="view-transition-name:t-trustworthy-ai-benchmarks">What makes an AI benchmark trustworthy</h2><p>Contamination, unfair tests and vague task statements quietly break evaluations. Here is how to build benchmarks whose scores you can believe.</p><span class="meta">8 min read · 5 sources</span></a><a class="post-card " href="rlhf-preference-data-guide.html"><span class="corner" aria-hidden="true"></span><span class="eyebrow">Training data</span><h2 style="view-transition-name:t-rlhf-preference-data-guide">RLHF and preference data, explained for teams that collect it</h2><p>Reinforcement learning from human feedback is only as good as the comparisons behind it. What to collect, who should collect it, and how DPO changes the pipeline.</p><span class="meta">9 min read · 4 sources</span></a></div></section>
+</main><footer><div class="wrap">
+<div class="fgrid">
+<p style="margin:0;font-family:var(--disp);font-size:22px;line-height:1.35;color:var(--paper);max-width:340px">Egocentric and expert-built data for frontier AI.</p>
+<div class="fcols">
+<div><span class="h">PRACTICES</span><a href="../index.html#build">Latryn Eval</a><a href="../index.html#build">Latryn Train</a><a href="../index.html#build">Latryn Env</a><a href="../index.html#egocentric">Latryn Capture</a><a href="../index.html#build">Latryn Review</a></div>
+<div><span class="h">BLOG</span><a href="../blog/egocentric-data-collection.html">Egocentric data collection</a><a href="../blog/trustworthy-ai-benchmarks.html">What makes an AI benchmark trustworthy</a><a href="../blog/rlhf-preference-data-guide.html">RLHF and preference data, explained for teams that collect it</a><a href="../blog/building-agent-environments.html">How to build agent environments that test real work</a><a href="../blog/index.html">All articles</a></div>
+<div><span class="h">COMPANY</span><a href="../index.html#quality">Quality process</a><a href="../sample-tasks.html">Sample tasks</a><a href="../index.html#lattice">Careers</a><a href="../index.html#contact">Contact</a></div>
+<div><span class="h">SOCIAL</span><a data-social="linkedin" href="#">LinkedIn</a><a data-social="x" href="#">X</a><a data-social="youtube" href="#">YouTube</a><a class="ico" data-social="discord" href="https://discord.gg/FX8hXUmCE" aria-label="Join our Discord" title="Join our Discord"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M20.32 4.37a19.8 19.8 0 0 0-4.89-1.52.07.07 0 0 0-.08.04c-.21.38-.44.87-.61 1.25a18.27 18.27 0 0 0-5.49 0 12.64 12.64 0 0 0-.62-1.25.08.08 0 0 0-.08-.04 19.74 19.74 0 0 0-4.88 1.52.07.07 0 0 0-.03.03C.53 9.05-.32 13.58.1 18.06a.08.08 0 0 0 .03.06 19.9 19.9 0 0 0 5.99 3.03.08.08 0 0 0 .08-.03c.46-.63.87-1.3 1.23-1.99a.08.08 0 0 0-.04-.11 13.1 13.1 0 0 1-1.87-.89.08.08 0 0 1-.01-.13l.37-.29a.07.07 0 0 1 .08-.01c3.93 1.79 8.18 1.79 12.06 0a.07.07 0 0 1 .08.01l.37.29a.08.08 0 0 1 0 .13c-.6.35-1.22.64-1.88.89a.08.08 0 0 0-.04.11c.36.7.77 1.36 1.23 1.99a.08.08 0 0 0 .08.03 19.84 19.84 0 0 0 6-3.03.08.08 0 0 0 .03-.06c.5-5.18-.84-9.67-3.55-13.66a.06.06 0 0 0-.03-.03ZM8.02 15.33c-1.18 0-2.16-1.09-2.16-2.42 0-1.33.96-2.42 2.16-2.42 1.21 0 2.18 1.1 2.16 2.42 0 1.33-.96 2.42-2.16 2.42Zm7.97 0c-1.18 0-2.15-1.09-2.15-2.42 0-1.33.95-2.42 2.15-2.42 1.21 0 2.18 1.1 2.16 2.42 0 1.33-.95 2.42-2.16 2.42Z"/></svg></a><a data-email="general" href="mailto:contact@latryn.com">contact@latryn.com</a></div>
+</div></div>
+<div class="legal"><span>© 2026 Latryn · Bengaluru, India</span><span style="display:flex;gap:20px"><a href="../privacy.html">Privacy</a><a href="../terms.html">Terms</a></span></div>
+</div></footer>
+<script src="../assets/vendor/lenis.min.js"></script>
+<script src="../assets/site.js"></script>
+</body>
+</html>
