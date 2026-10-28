@@ -22,7 +22,7 @@ data collection and annotation for robotics and embodied AI, plus benchmarks, tr
 - General question: https://latryn.com/index.html?type=General%20question#contact
 - Join the expert network (careers): https://latryn.com/apply.html
   (optional ?role=Software%20Engineer, ML%20%26%20Evaluation%20Specialist or Domain%20Expert)
-The contact form opens the user's email app with the answers filled in. The application form needs
+The contact form sends the answers to the Latryn team (stored for review). The application form needs
 a resume file and stores answers for review. There is no API and no automated booking. Do not submit
 forms without the user's confirmation.
 

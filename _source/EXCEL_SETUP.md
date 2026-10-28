@@ -6,6 +6,8 @@
 - add a row to a table in an Excel file in that OneDrive, with a link to the resume
 - email the applicant a confirmation from your Outlook mailbox, and email the team a notification
 
+The homepage contact form (`index.html#contact-form`) uses the same function: each enquiry becomes a row in a second table, `Enquiries`, in the same workbook, and the team gets an email they can reply to.
+
 The resume goes straight from the browser to OneDrive, so the 10 MB limit works even though Vercel functions accept at most 4.5 MB per request.
 
 You need a **Microsoft 365 business** account (work Outlook and OneDrive) and admin rights to approve an app. Allow about 20 minutes.
@@ -25,7 +27,15 @@ You need a **Microsoft 365 business** account (work Outlook and OneDrive) and ad
 5. Select A1:N1, choose **Insert > Table**, and tick **My table has headers**.
 6. With the table selected, open the **Table Design** tab and set **Table Name** to `Applications`.
 
-New applications are added as rows at the bottom of that table. You can sort, filter and add columns after column N freely. Don't rename, reorder or remove columns A to N.
+7. Add a second sheet for the contact form (the **+** next to the sheet tabs) and name it `Enquiries`. Type these 9 headers from A1 to I1:
+
+   ```
+   Submitted at	Name	Email	Company	I want to	We are	Volume or timeline	Message	Status
+   ```
+
+8. Select A1:I1, choose **Insert > Table**, tick **My table has headers**, and set **Table Name** to `Enquiries`.
+
+New applications and enquiries are added as rows at the bottom of their table. You can sort, filter and add columns after column N freely. Don't rename, reorder or remove columns A to N (A to I on `Enquiries`).
 
 ## 2. Register the app in Azure
 
@@ -51,6 +61,7 @@ Copy everything from `.env.example` in the repo root, then go to Vercel > Projec
 | `MS_USER` | The OneDrive owner and sender, e.g. `contact@latryn.com` |
 | `EXCEL_FILE_PATH` | Path of the workbook inside that OneDrive. Default `Lattice/Lattice applications.xlsx` |
 | `EXCEL_TABLE` | Table name. Default `Applications` |
+| `ENQUIRY_TABLE` | Table for contact form enquiries. Default `Enquiries` |
 | `RESUME_FOLDER` | Default `Lattice/Resumes` |
 | `TEAM_EMAIL` | Gets a notification per application. `none` turns it off. Default: `MS_USER` |
 | `REPLY_TO` | Where applicant replies go. Default: `MS_USER` |
@@ -62,7 +73,7 @@ On each deploy, `vercel.json` runs `_source/inject-env.js`. When the four requir
 
 ## 4. Test it
 
-Submit `apply.html` with your own email. You should see a new row in the table, the resume in `Lattice/Resumes`, a confirmation email and a team notification. If something fails, check Vercel > Project > **Logs** for the `/api/apply` function. Microsoft's error message is logged there.
+Send the homepage contact form once: a row should appear in `Enquiries` and the team should get an email. Then submit `apply.html` with your own email. You should see a new row in the table, the resume in `Lattice/Resumes`, a confirmation email and a team notification. If something fails, check Vercel > Project > **Logs** for the `/api/apply` function. Microsoft's error message is logged there.
 
 ## Later
 

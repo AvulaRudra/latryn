@@ -9,6 +9,9 @@
  *   action "finish"  checks the ticket and the uploaded file, adds a row to the Excel table,
  *                    emails the applicant a confirmation and the team a notification
  *
+ * One call from the homepage contact form (index.html#contact-form):
+ *   action "contact" adds a row to the Enquiries table in the same workbook and emails the team
+ *
  * Settings come from Vercel environment variables (see .env.example and _source/EXCEL_SETUP.md).
  * Keep the option lists in step with QUALIFICATIONS etc. in _source/build_pages.py.
  */
@@ -37,6 +40,10 @@ const OPTIONS = {
     "Other"
   ]
 };
+const CONTACT = {
+  type: ["Scope a program", "Book a call", "Talk to a researcher", "Talk to our team", "Talk to an expert", "Request the task library", "General question"],
+  audience: ["AI Labs", "AI Platforms", "Enterprise AI", "Other"]
+};
 const MAX_BYTES = 10 * 1024 * 1024;
 const TICKET_MS = 30 * 60 * 1000;
 const GRAPH = "https://graph.microsoft.com/v1.0";
@@ -48,6 +55,7 @@ function cfg() {
     user: env("MS_USER"),                                    // mailbox and OneDrive owner, e.g. contact@latryn.com
     workbook: env("EXCEL_FILE_PATH", "Lattice/Lattice applications.xlsx"),
     table: env("EXCEL_TABLE", "Applications"),
+    enquiries: env("ENQUIRY_TABLE", "Enquiries"),
     folder: env("RESUME_FOLDER", "Lattice/Resumes"),
     team: env("TEAM_EMAIL", env("MS_USER")),                 // "none" turns team notifications off
     replyTo: env("REPLY_TO", env("MS_USER")),
@@ -66,6 +74,7 @@ module.exports = async function handler(req, res) {
   try {
     const d = typeof req.body === "string" ? JSON.parse(req.body || "{}") : (req.body || {});
     if (d.website) return send(res, 200, { ok: true, uploadUrl: null, ticket: null });  // honeypot: a bot
+    if (d.action === "contact") return send(res, 200, await contact(c, d));
     const a = validate(d);
     if (d.action === "start") return send(res, 200, await start(c, a, d.resume));
     if (d.action === "finish") return send(res, 200, await finish(c, a, d.ticket));
@@ -121,6 +130,38 @@ async function finish(c, a, ticket) {
   return { ok: true };
 }
 
+/* contact form: one row in the Enquiries table, then a team notification the team can reply to */
+async function contact(c, d) {
+  const str = (k, max) => String(d[k] == null ? "" : d[k]).trim().slice(0, max || 200);
+  const q = {
+    name: str("name", 120), email: str("email", 160).toLowerCase(), company: str("company", 160),
+    type: str("type"), audience: str("audience"), timeline: str("timeline", 200), message: str("message", 5000)
+  };
+  if (!q.name) fail("Please enter your name.");
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(q.email)) fail("Please enter a valid email address.");
+  if (!q.company) fail("Please enter your company.");
+  if (!q.message) fail("Please tell us what you need.");
+  if (!CONTACT.type.includes(q.type)) q.type = "General question";
+  if (!CONTACT.audience.includes(q.audience)) q.audience = "Other";
+
+  let saved = true;
+  try {
+    await graph(c, "POST", `/users/${enc(c.user)}/drive/root:/${encPath(c.workbook)}:/workbook/tables/${enc(c.enquiries)}/rows/add`, {
+      values: [[stamp(c.timeZone), safe(q.name), safe(q.email), safe(q.company), q.type, q.audience, safe(q.timeline), safe(q.message), "New"]]
+    });
+  } catch (e) { saved = false; console.error(e); }  // still email the team, so the enquiry isn't lost
+  if (!saved && (!c.team || c.team === "none")) throw new Error("Enquiry not saved and team email is off");
+  if (c.team && c.team !== "none") {
+    const rows = [["Name", q.name], ["Email", q.email], ["Company", q.company], ["I want to", q.type], ["We are", q.audience],
+      ["Volume or timeline", q.timeline || "Not provided"], ["Message", q.message]];
+    await mail(c, {
+      to: c.team, subject: `${q.type} | ${q.company}${saved ? "" : " (not saved to Excel)"}`, replyTo: q.email,
+      html: `<table style="font:14px Arial,sans-serif">${rows.map(r => `<tr><td style="padding:4px 12px 4px 0;color:#66635e;vertical-align:top">${esc(r[0])}</td><td style="white-space:pre-wrap">${esc(r[1])}</td></tr>`).join("")}</table>`
+    });
+  }
+  return { ok: true };
+}
+
 /* ---------- validation ---------- */
 
 function validate(d) {
@@ -165,7 +206,15 @@ async function graph(c, method, path, body) {
   });
   if (r.status === 202 || r.status === 204) return {};
   const text = await r.text();
-  if (!r.ok) throw new Error(`Graph ${method} ${path} failed: ${r.status} ${text.slice(0, 300)}`);
+  if (!r.ok) {
+    /* 401/403 means Azure gave a token without the right permission: log what it does have */
+    let roles = "";
+    if (r.status === 401 || r.status === 403) {
+      try { roles = " | app permissions in token: " + (JSON.parse(Buffer.from(cachedToken.value.split(".")[1], "base64url")).roles || ["none"]).join(", "); } catch (e) {}
+      cachedToken = null;  // fetch a fresh token next time, in case consent was just granted
+    }
+    throw new Error(`Graph ${method} ${path} failed: ${r.status} ${text.slice(0, 300)}${roles}`);
+  }
   return text ? JSON.parse(text) : {};
 }
 

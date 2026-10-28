@@ -68,7 +68,7 @@ def nav(pre, current=''):
     def cur(n): return ' aria-current="page"' if n == current else ''
     return f'''<header class="nav" id="nav"><nav class="nav-in" aria-label="Main">
 <a href="{pre}index.html" class="logo" aria-label="Latryn home"><svg viewBox="0 0 292 94" width="87" height="28" aria-hidden="true">{LOGO}</svg></a>
-<div class="nav-links"><a href="{pre}index.html#egocentric">Egocentric</a><a href="{pre}index.html#build">Services</a><a href="{pre}index.html#quality">Quality</a><a href="{pre}sample-tasks.html"{cur('tasks')}>Sample tasks</a><a href="{pre}blog/index.html"{cur('blog')}>Blog</a><a href="{pre}index.html#lattice">Careers</a></div>
+<div class="nav-links"><a href="{pre}index.html#egocentric">Egocentric</a><a href="{pre}index.html#build">Services</a><a href="{pre}index.html#quality">Quality</a><a href="{pre}sample-tasks.html"{cur('tasks')}>Sample tasks</a><a href="{pre}blog/index.html"{cur('blog')}>Blog</a><a href="{pre}index.html#lattice">Careers</a><a class="ico" data-social="discord" href="https://discord.gg/FX8hXUmCE" aria-label="Join our Discord" title="Join our Discord"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M20.32 4.37a19.8 19.8 0 0 0-4.89-1.52.07.07 0 0 0-.08.04c-.21.38-.44.87-.61 1.25a18.27 18.27 0 0 0-5.49 0 12.64 12.64 0 0 0-.62-1.25.08.08 0 0 0-.08-.04 19.74 19.74 0 0 0-4.88 1.52.07.07 0 0 0-.03.03C.53 9.05-.32 13.58.1 18.06a.08.08 0 0 0 .03.06 19.9 19.9 0 0 0 5.99 3.03.08.08 0 0 0 .08-.03c.46-.63.87-1.3 1.23-1.99a.08.08 0 0 0-.04-.11 13.1 13.1 0 0 1-1.87-.89.08.08 0 0 1-.01-.13l.37-.29a.07.07 0 0 1 .08-.01c3.93 1.79 8.18 1.79 12.06 0a.07.07 0 0 1 .08.01l.37.29a.08.08 0 0 1 0 .13c-.6.35-1.22.64-1.88.89a.08.08 0 0 0-.04.11c.36.7.77 1.36 1.23 1.99a.08.08 0 0 0 .08.03 19.84 19.84 0 0 0 6-3.03.08.08 0 0 0 .03-.06c.5-5.18-.84-9.67-3.55-13.66a.06.06 0 0 0-.03-.03ZM8.02 15.33c-1.18 0-2.16-1.09-2.16-2.42 0-1.33.96-2.42 2.16-2.42 1.21 0 2.18 1.1 2.16 2.42 0 1.33-.96 2.42-2.16 2.42Zm7.97 0c-1.18 0-2.15-1.09-2.15-2.42 0-1.33.95-2.42 2.15-2.42 1.21 0 2.18 1.1 2.16 2.42 0 1.33-.95 2.42-2.16 2.42Z"/></svg></a></div>
 <a class="btn btn-ink" href="{pre}index.html?type=Scope%20a%20program#contact" style="min-height:44px;padding:11px 18px;font-size:15px">Scope a program <span class="sq" aria-hidden="true"></span></a>
 </nav></header>'''
 
@@ -81,7 +81,7 @@ def footer(pre):
 <div><span class="h">PRACTICES</span><a href="{pre}index.html#build">Latryn Eval</a><a href="{pre}index.html#build">Latryn Train</a><a href="{pre}index.html#build">Latryn Env</a><a href="{pre}index.html#egocentric">Latryn Capture</a><a href="{pre}index.html#build">Latryn Review</a></div>
 <div><span class="h">BLOG</span>{posts}<a href="{pre}blog/index.html">All articles</a></div>
 <div><span class="h">COMPANY</span><a href="{pre}index.html#quality">Quality process</a><a href="{pre}sample-tasks.html">Sample tasks</a><a href="{pre}index.html#lattice">Careers</a><a href="{pre}index.html#contact">Contact</a></div>
-<div><span class="h">SOCIAL</span><a data-social="linkedin" href="#">LinkedIn</a><a data-social="x" href="#">X</a><a data-social="youtube" href="#">YouTube</a><a data-email="general" href="#"></a></div>
+<div><span class="h">SOCIAL</span><a data-social="linkedin" href="#">LinkedIn</a><a data-social="x" href="#">X</a><a data-social="youtube" href="#">YouTube</a><a class="ico" data-social="discord" href="https://discord.gg/FX8hXUmCE" aria-label="Join our Discord" title="Join our Discord"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M20.32 4.37a19.8 19.8 0 0 0-4.89-1.52.07.07 0 0 0-.08.04c-.21.38-.44.87-.61 1.25a18.27 18.27 0 0 0-5.49 0 12.64 12.64 0 0 0-.62-1.25.08.08 0 0 0-.08-.04 19.74 19.74 0 0 0-4.88 1.52.07.07 0 0 0-.03.03C.53 9.05-.32 13.58.1 18.06a.08.08 0 0 0 .03.06 19.9 19.9 0 0 0 5.99 3.03.08.08 0 0 0 .08-.03c.46-.63.87-1.3 1.23-1.99a.08.08 0 0 0-.04-.11 13.1 13.1 0 0 1-1.87-.89.08.08 0 0 1-.01-.13l.37-.29a.07.07 0 0 1 .08-.01c3.93 1.79 8.18 1.79 12.06 0a.07.07 0 0 1 .08.01l.37.29a.08.08 0 0 1 0 .13c-.6.35-1.22.64-1.88.89a.08.08 0 0 0-.04.11c.36.7.77 1.36 1.23 1.99a.08.08 0 0 0 .08.03 19.84 19.84 0 0 0 6-3.03.08.08 0 0 0 .03-.06c.5-5.18-.84-9.67-3.55-13.66a.06.06 0 0 0-.03-.03ZM8.02 15.33c-1.18 0-2.16-1.09-2.16-2.42 0-1.33.96-2.42 2.16-2.42 1.21 0 2.18 1.1 2.16 2.42 0 1.33-.96 2.42-2.16 2.42Zm7.97 0c-1.18 0-2.15-1.09-2.15-2.42 0-1.33.95-2.42 2.15-2.42 1.21 0 2.18 1.1 2.16 2.42 0 1.33-.95 2.42-2.16 2.42Z"/></svg></a><a data-email="general" href="#"></a></div>
 </div></div>
 <div class="legal"><span>© 2026 Latryn · Bengaluru, India</span><span style="display:flex;gap:20px"><a href="{pre}privacy.html">Privacy</a><a href="{pre}terms.html">Terms</a></span></div>
 </div></footer>
@@ -292,7 +292,7 @@ def apply_page():
 <span class="eyebrow">Application received</span>
 <h2 id="done-title">Thanks, <span id="done-name">there</span><span class="dot on"></span></h2>
 <p>We sent a confirmation to <b id="done-email"></b>. Our team reviews every application and will email you about next steps.</p>
-<div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn btn-ink" href="index.html">Back to home <span class="arr" aria-hidden="true">→</span></a><a class="btn btn-ghost" href="sample-tasks.html">See sample tasks</a></div>
+<div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn btn-ink" href="index.html">Back to home <span class="arr" aria-hidden="true">→</span></a><a class="btn btn-verd" data-social="discord" href="https://discord.gg/FX8hXUmCE">Join our Discord <span class="arr" aria-hidden="true">→</span></a><a class="btn btn-ghost" href="sample-tasks.html">See sample tasks</a></div>
 </section>
 </div>
 </main>''' + footer(''))
@@ -301,7 +301,7 @@ def legal(kind):
     if kind == 'privacy':
         title, body = 'Privacy policy', '''<p>This website does not use cookies or advertising trackers.</p>
 <h2>Analytics</h2><p>We use Vercel Web Analytics to count page views and see which pages are useful. It sets no cookies and does not identify you or follow you across sites. Vercel processes standard request information such as the page address, referrer, browser, device type and country.</p>
-<h2>What we collect</h2><p>When you use the contact form, your email app opens with a message addressed to us. We only receive what you choose to send, such as your name, email address, company and message.</p>
+<h2>What we collect</h2><p>When you use the contact form, we receive your name, work email, company and message. We store them in our Microsoft 365 account (Excel, in OneDrive) and use them only to reply to you. If the form can't reach us, it opens your email app instead and we receive only what you choose to send.</p>
 <p>When you apply to the Lattice, we receive the answers you enter (name, email, phone number, education, the work you want to do, availability and an optional profile link) and the resume you upload.</p>
 <h2>How we use it</h2><p>We use your message to reply to you and to discuss a possible project or role. We use applications only to assess you for work in the Lattice and to email you about it, including an automatic confirmation when you apply. We do not sell your information or share it for marketing.</p>
 <h2>Retention and your rights</h2><p>We keep correspondence for as long as needed to respond and to meet legal obligations. You can ask us to access, correct or delete your information at any time by emailing <a data-email="general" href="#"></a>.</p>
@@ -398,7 +398,7 @@ Work follows a five-step process: Scope, Calibrate, Build, Verify, Deliver. Expe
 
 ## Optional
 
-- [Privacy policy]({BASE_URL}/privacy.html): No cookies or advertising trackers; cookieless Vercel Web Analytics; the contact form sends email, applications are stored for review
+- [Privacy policy]({BASE_URL}/privacy.html): No cookies or advertising trackers; cookieless Vercel Web Analytics; contact enquiries and applications are stored for review
 - [Terms of use]({BASE_URL}/terms.html)
 ''')
     write('agents.txt', f'''# agents.txt for Latryn
@@ -425,7 +425,7 @@ data collection and annotation for robotics and embodied AI, plus benchmarks, tr
 - General question: {BASE_URL}/index.html?type=General%20question#contact
 - Join the expert network (careers): {BASE_URL}/apply.html
   (optional ?role=Software%20Engineer, ML%20%26%20Evaluation%20Specialist or Domain%20Expert)
-The contact form opens the user's email app with the answers filled in. The application form needs
+The contact form sends the answers to the Latryn team (stored for review). The application form needs
 a resume file and stores answers for review. There is no API and no automated booking. Do not submit
 forms without the user's confirmation.
 

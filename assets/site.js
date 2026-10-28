@@ -12,7 +12,8 @@ window.LATRYN = {
   social: {
     linkedin: "",                          // e.g. https://www.linkedin.com/company/latryn
     x: "",                                 // e.g. https://x.com/latryn
-    youtube: ""                            // e.g. https://www.youtube.com/@latryn
+    youtube: "",                           // e.g. https://www.youtube.com/@latryn
+    discord: "https://discord.gg/FX8hXUmCE" // community invite: footer and the apply success panel
   }
 };
 
@@ -100,24 +101,52 @@ window.LATRYN = {
   var params = new URLSearchParams(location.search);
   if (params.get("type") || params.get("audience")) prefill(contact, { type: params.get("type"), audience: params.get("audience") });
 
-  /* ---------- forms compose an email (no backend needed) ---------- */
+  /* ---------- contact form: saved to Excel via the backend when it's on, otherwise it composes an email ---------- */
   function wire(form, to, subjectFn) {
     if (!form) return;
+    var btn = form.querySelector("button[type=submit]"), ok = form.querySelector(".form-ok"), note = form.querySelector(".note");
+    if (C.applyEndpoint && note) note.textContent = "We reply within one working day.";
+    function flash(label) {
+      if (!btn.dataset.label) btn.dataset.label = btn.innerHTML;
+      btn.classList.add("sent"); btn.textContent = label;
+      setTimeout(function () { btn.innerHTML = btn.dataset.label; btn.classList.remove("sent"); delete btn.dataset.label; }, 4000);
+    }
+    function mailto(fd) {
+      var lines = [];
+      fd.forEach(function (v, k) { if (v && k !== "website") lines.push(k.charAt(0).toUpperCase() + k.slice(1) + ": " + v); });
+      return "mailto:" + to + "?subject=" + encodeURIComponent(subjectFn(fd)) + "&body=" + encodeURIComponent(lines.join("\n") + "\n\nSent from the Latryn website");
+    }
     form.addEventListener("submit", function (e) {
       e.preventDefault();
-      if (!form.reportValidity()) return;
-      var fd = new FormData(form), lines = [];
-      fd.forEach(function (v, k) { if (v) lines.push(k.charAt(0).toUpperCase() + k.slice(1) + ": " + v); });
-      var href = "mailto:" + to + "?subject=" + encodeURIComponent(subjectFn(fd)) + "&body=" + encodeURIComponent(lines.join("\n") + "\n\nSent from the Latryn website");
-      window.location.href = href;
-      var ok = form.querySelector(".form-ok");
-      if (ok) { ok.hidden = false; ok.querySelector("a").href = href; }
-      var btn = form.querySelector("button[type=submit]");
-      if (btn && !btn.dataset.label) {
-        btn.dataset.label = btn.innerHTML;
-        btn.classList.add("sent"); btn.textContent = "Email ready to send";
-        setTimeout(function () { btn.innerHTML = btn.dataset.label; btn.classList.remove("sent"); delete btn.dataset.label; }, 4000);
+      if (!form.reportValidity() || btn.disabled) return;
+      var fd = new FormData(form), href = mailto(fd);
+      if (!C.applyEndpoint) {
+        window.location.href = href;
+        if (ok) { ok.hidden = false; ok.innerHTML = 'Your email app should open with this message ready to send. If it didn\'t, <a href="#">open it here</a>.'; ok.querySelector("a").href = href; }
+        flash("Email ready to send");
+        return;
       }
+      var body = { action: "contact" };
+      fd.forEach(function (v, k) { body[k] = v; });
+      btn.disabled = true; btn.dataset.label = btn.innerHTML; btn.textContent = "Sending";
+      fetch(C.applyEndpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })
+        .then(function (r) { return r.json(); })
+        .then(function (r) {
+          btn.disabled = false; btn.innerHTML = btn.dataset.label; delete btn.dataset.label;
+          if (!r.ok) throw new Error(r.error || "");
+          form.reset();
+          if (ok) { ok.hidden = false; ok.textContent = "Thanks. We have your enquiry and will reply within one working day."; }
+          flash("Enquiry sent");
+        })
+        .catch(function (err) {
+          btn.disabled = false; if (btn.dataset.label) { btn.innerHTML = btn.dataset.label; delete btn.dataset.label; }
+          if (ok) {
+            ok.hidden = false;
+            ok.innerHTML = '<span></span> You can also <a href="#">email us instead</a>.';
+            ok.querySelector("span").textContent = (err && err.message) || "We couldn't send your enquiry. Please try again.";
+            ok.querySelector("a").href = href;
+          }
+        });
     });
   }
   wire(contact, C.email, function (fd) { return (fd.get("type") || "Enquiry") + " | " + (fd.get("company") || fd.get("name")); });

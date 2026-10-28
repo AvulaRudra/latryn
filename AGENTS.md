@@ -11,7 +11,7 @@ Static marketing site for **Latryn**, a data lab for frontier AI. **Lead offer: 
 index.html              homepage (self-contained CSS, loads assets/site.js and assets/home.js)
 sample-tasks.html       task library preview (CTA target for "Browse sample tasks")
 apply.html              "Apply to the Lattice" application form (generated; posts to api/apply.js)
-api/apply.js            Vercel function: saves applications to Excel + OneDrive, emails via Outlook (Microsoft Graph)
+api/apply.js            Vercel function: saves applications and contact enquiries to Excel + OneDrive, emails via Outlook (Microsoft Graph)
 privacy.html, terms.html, 404.html
 blog/index.html         blog listing
 blog/<slug>.html        articles (generated)
@@ -57,7 +57,7 @@ CTAs declare intent with attributes; do not hard-code mailto links:
 
 The build also writes the address into every `data-email` link, so it shows without JavaScript; if you change it, update `EMAIL` in `build_pages.py` too.
 
-The contact form has no backend: it composes an email with the answers. The application form posts to `applyEndpoint`; its dropdown options live in `build_pages.py` and must match `OPTIONS` in `api/apply.js`. To switch to a form service later, replace `wire()` in `site.js` and keep the field names.
+Both forms post to `applyEndpoint` (`api/apply.js`). The contact form sends `action: "contact"` and becomes a row in the `Enquiries` table plus a team email; with no endpoint it composes an email instead. The application form its dropdown options live in `build_pages.py` and must match `OPTIONS` in `api/apply.js`. To switch to a form service later, replace `wire()` in `site.js` and keep the field names.
 
 ## Egocentric data: how it appears on the site
 
