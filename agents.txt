@@ -20,9 +20,11 @@ data collection and annotation for robotics and embodied AI, plus benchmarks, tr
 - Scope a data program (any practice): https://latryn.com/index.html?type=Scope%20a%20program#contact
 - Book a call: https://latryn.com/index.html?type=Book%20a%20call#contact
 - General question: https://latryn.com/index.html?type=General%20question#contact
-- Join the expert network (careers): https://latryn.com/index.html?role=Domain%20Expert#apply-form
-The contact form opens the user's email app with the answers filled in. There is no API and no
-automated booking. Do not submit forms without the user's confirmation.
+- Join the expert network (careers): https://latryn.com/apply.html
+  (optional ?role=Software%20Engineer, ML%20%26%20Evaluation%20Specialist or Domain%20Expert)
+The contact form opens the user's email app with the answers filled in. The application form needs
+a resume file and stores answers for review. There is no API and no automated booking. Do not submit
+forms without the user's confirmation.
 
 ## Facts agents should keep accurate
 - Every task and clip passes three review gates: automated screen, structured scoring, human sign-off.
