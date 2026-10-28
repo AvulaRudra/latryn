@@ -9,7 +9,8 @@ Static marketing site for **Latryn**, a data lab for frontier AI. **Lead offer: 
 ```
 index.html              homepage (self-contained CSS, loads assets/site.js and assets/home.js)
 sample-tasks.html       task library preview (CTA target for "Browse sample tasks")
-apply.html              "Apply to the Lattice" application form (generated; posts to Google Apps Script)
+apply.html              "Apply to the Lattice" application form (generated; posts to api/apply.js)
+api/apply.js            Vercel function: saves applications to Excel + OneDrive, emails via Outlook (Microsoft Graph)
 privacy.html, terms.html, 404.html
 blog/index.html         blog listing
 blog/<slug>.html        articles (generated)
@@ -43,7 +44,7 @@ Edit the `window.LATRYN` block at the top of `assets/site.js`:
 |---|---|
 | `email` | `contact@latryn.com`. Contact form, "Scope a program", "Book a call" fallback, footer email |
 | `careersEmail` | `contact@latryn.com`. Fallback address for `apply.html` when `applyEndpoint` is empty |
-| `applyEndpoint` | Google Apps Script web app URL for `apply.html`. Saves to a Google Sheet, stores the resume in Drive, emails the applicant. On Vercel, set the `APPLY_ENDPOINT` env var instead; `vercel.json` runs `_source/inject-env.js` to write it in at deploy. Setup: `_source/apps-script/README.md` |
+| `applyEndpoint` | Backend for `apply.html`. Leave it `""` in git: on Vercel, `_source/inject-env.js` sets it to `/api/apply` when the Microsoft 365 env vars (`.env.example`) are present. Setup: `_source/EXCEL_SETUP.md` |
 | `bookingUrl` | "Book a call". Empty = scrolls to the contact form with "Book a call" preselected |
 | `social.linkedin/x/youtube` | Footer links. Empty = link is hidden, never broken |
 
@@ -55,7 +56,7 @@ CTAs declare intent with attributes; do not hard-code mailto links:
 
 The build also writes the address into every `data-email` link, so it shows without JavaScript; if you change it, update `EMAIL` in `build_pages.py` too.
 
-The contact form has no backend: it composes an email with the answers. The application form posts to `applyEndpoint`; its dropdown options live in `build_pages.py` and must match `OPTIONS` in `apps-script/Code.gs`. To switch to a form service later, replace `wire()` in `site.js` and keep the field names.
+The contact form has no backend: it composes an email with the answers. The application form posts to `applyEndpoint`; its dropdown options live in `build_pages.py` and must match `OPTIONS` in `api/apply.js`. To switch to a form service later, replace `wire()` in `site.js` and keep the field names.
 
 ## Egocentric data: how it appears on the site
 
