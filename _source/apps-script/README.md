@@ -30,6 +30,7 @@ Emails are sent from the Google account that deploys the script. Deploy it from 
 7. Click **Deploy** and copy the **Web app URL** (it ends in `/exec`).
 8. Give the site that URL. Pick one:
    - **Vercel environment variable (recommended on Vercel):** in Vercel open Project > Settings > Environment Variables, add `APPLY_ENDPOINT` with the URL for Production (and Preview if you want previews to save applications too), then redeploy. `vercel.json` runs `_source/inject-env.js` on every deploy, which writes the value into `assets/site.js`. Nothing changes in git.
+   - **In `vercel.json`:** put the URL in `build.env.APPLY_ENDPOINT` and push. The deploy script reads it from there if the Vercel dashboard has no `APPLY_ENDPOINT` (the dashboard value wins). Vercel calls `build.env` a legacy setting, which is why the script reads the file itself.
    - **In the code:** paste the URL into `applyEndpoint` in `_source/assets/site.js` and `assets/site.js`, then rebuild and publish:
 
      ```bash

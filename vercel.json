@@ -4,5 +4,10 @@
   "installCommand": "",
   "buildCommand": "node _source/inject-env.js",
   "outputDirectory": ".",
-  "trailingSlash": false
+  "trailingSlash": false,
+  "build": {
+    "env": {
+      "APPLY_ENDPOINT": ""
+    }
+  }
 }

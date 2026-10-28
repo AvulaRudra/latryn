@@ -1,12 +1,18 @@
-/* Vercel build step: writes the APPLY_ENDPOINT environment variable into assets/site.js.
-   Set it in Vercel > Project > Settings > Environment Variables. The value ends up in the
-   public page (the browser posts to it), so this keeps config out of git, not secret.
+/* Vercel build step: writes APPLY_ENDPOINT into assets/site.js.
+   Reads it from the Vercel project's Environment Variables first, then from
+   build.env.APPLY_ENDPOINT in vercel.json. The value ends up in the public page
+   (the browser posts to it), so it is config, not a secret.
    Run: node _source/inject-env.js  (vercel.json runs it on every deploy) */
 const fs = require("fs");
 const path = require("path");
 
-const file = path.join(__dirname, "..", "assets", "site.js");
-const url = (process.env.APPLY_ENDPOINT || "").trim();
+const root = path.join(__dirname, "..");
+const file = path.join(root, "assets", "site.js");
+function fromJson() {
+  try { return ((JSON.parse(fs.readFileSync(path.join(root, "vercel.json"), "utf8")).build || {}).env || {}).APPLY_ENDPOINT || ""; }
+  catch (e) { return ""; }
+}
+const url = (process.env.APPLY_ENDPOINT || fromJson()).trim();
 
 if (!url) {
   console.log("APPLY_ENDPOINT not set: the application form uses the email fallback");
