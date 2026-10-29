@@ -81,7 +81,7 @@ def footer(pre):
 <div><span class="h">PRACTICES</span><a href="{pre}index.html#build">Latryn Eval</a><a href="{pre}index.html#build">Latryn Train</a><a href="{pre}index.html#build">Latryn Env</a><a href="{pre}index.html#egocentric">Latryn Capture</a><a href="{pre}index.html#build">Latryn Review</a></div>
 <div><span class="h">BLOG</span>{posts}<a href="{pre}blog/index.html">All articles</a></div>
 <div><span class="h">COMPANY</span><a href="{pre}index.html#quality">Quality process</a><a href="{pre}sample-tasks.html">Sample tasks</a><a href="{pre}index.html#lattice">Careers</a><a href="{pre}index.html#contact">Contact</a></div>
-<div><span class="h">SOCIAL</span><a data-social="linkedin" href="#">LinkedIn</a><a data-social="x" href="#">X</a><a data-social="youtube" href="#">YouTube</a><a class="ico" data-social="discord" href="https://discord.gg/FX8hXUmCE" aria-label="Join our Discord" title="Join our Discord"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M20.32 4.37a19.8 19.8 0 0 0-4.89-1.52.07.07 0 0 0-.08.04c-.21.38-.44.87-.61 1.25a18.27 18.27 0 0 0-5.49 0 12.64 12.64 0 0 0-.62-1.25.08.08 0 0 0-.08-.04 19.74 19.74 0 0 0-4.88 1.52.07.07 0 0 0-.03.03C.53 9.05-.32 13.58.1 18.06a.08.08 0 0 0 .03.06 19.9 19.9 0 0 0 5.99 3.03.08.08 0 0 0 .08-.03c.46-.63.87-1.3 1.23-1.99a.08.08 0 0 0-.04-.11 13.1 13.1 0 0 1-1.87-.89.08.08 0 0 1-.01-.13l.37-.29a.07.07 0 0 1 .08-.01c3.93 1.79 8.18 1.79 12.06 0a.07.07 0 0 1 .08.01l.37.29a.08.08 0 0 1 0 .13c-.6.35-1.22.64-1.88.89a.08.08 0 0 0-.04.11c.36.7.77 1.36 1.23 1.99a.08.08 0 0 0 .08.03 19.84 19.84 0 0 0 6-3.03.08.08 0 0 0 .03-.06c.5-5.18-.84-9.67-3.55-13.66a.06.06 0 0 0-.03-.03ZM8.02 15.33c-1.18 0-2.16-1.09-2.16-2.42 0-1.33.96-2.42 2.16-2.42 1.21 0 2.18 1.1 2.16 2.42 0 1.33-.96 2.42-2.16 2.42Zm7.97 0c-1.18 0-2.15-1.09-2.15-2.42 0-1.33.95-2.42 2.15-2.42 1.21 0 2.18 1.1 2.16 2.42 0 1.33-.95 2.42-2.16 2.42Z"/></svg></a><a data-email="general" href="#"></a></div>
+<div><span class="h">SOCIAL</span><a data-social="x" href="#">X</a><a data-social="youtube" href="#">YouTube</a><span class="soc-ico"><a class="ico" data-social="linkedin" href="https://www.linkedin.com/company/latryn" aria-label="Latryn on LinkedIn" title="Latryn on LinkedIn"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg></a><a class="ico" data-social="discord" href="https://discord.gg/FX8hXUmCE" aria-label="Join our Discord" title="Join our Discord"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M20.32 4.37a19.8 19.8 0 0 0-4.89-1.52.07.07 0 0 0-.08.04c-.21.38-.44.87-.61 1.25a18.27 18.27 0 0 0-5.49 0 12.64 12.64 0 0 0-.62-1.25.08.08 0 0 0-.08-.04 19.74 19.74 0 0 0-4.88 1.52.07.07 0 0 0-.03.03C.53 9.05-.32 13.58.1 18.06a.08.08 0 0 0 .03.06 19.9 19.9 0 0 0 5.99 3.03.08.08 0 0 0 .08-.03c.46-.63.87-1.3 1.23-1.99a.08.08 0 0 0-.04-.11 13.1 13.1 0 0 1-1.87-.89.08.08 0 0 1-.01-.13l.37-.29a.07.07 0 0 1 .08-.01c3.93 1.79 8.18 1.79 12.06 0a.07.07 0 0 1 .08.01l.37.29a.08.08 0 0 1 0 .13c-.6.35-1.22.64-1.88.89a.08.08 0 0 0-.04.11c.36.7.77 1.36 1.23 1.99a.08.08 0 0 0 .08.03 19.84 19.84 0 0 0 6-3.03.08.08 0 0 0 .03-.06c.5-5.18-.84-9.67-3.55-13.66a.06.06 0 0 0-.03-.03ZM8.02 15.33c-1.18 0-2.16-1.09-2.16-2.42 0-1.33.96-2.42 2.16-2.42 1.21 0 2.18 1.1 2.16 2.42 0 1.33-.96 2.42-2.16 2.42Zm7.97 0c-1.18 0-2.15-1.09-2.15-2.42 0-1.33.95-2.42 2.15-2.42 1.21 0 2.18 1.1 2.16 2.42 0 1.33-.95 2.42-2.16 2.42Z"/></svg></a></span><a data-email="general" href="#"></a></div>
 </div></div>
 <div class="legal"><span>© 2026 Latryn · Bengaluru, India</span><span style="display:flex;gap:20px"><a href="{pre}privacy.html">Privacy</a><a href="{pre}terms.html">Terms</a></span></div>
 </div></footer>
@@ -288,11 +288,21 @@ def apply_page():
 <p class="form-msg" id="apply-msg" role="alert" hidden></p>
 </form>
 <section class="apply-done" id="apply-done" hidden tabindex="-1" aria-labelledby="done-title">
-<span class="stamp" aria-hidden="true"></span>
-<span class="eyebrow">Application received</span>
-<h2 id="done-title">Thanks, <span id="done-name">there</span><span class="dot on"></span></h2>
-<p>We sent a confirmation to <b id="done-email"></b>. Our team reviews every application and will email you about next steps.</p>
-<div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn btn-ink" href="index.html">Back to home <span class="arr" aria-hidden="true">→</span></a><a class="btn btn-verd" data-social="discord" href="https://discord.gg/FX8hXUmCE">Join our Discord <span class="arr" aria-hidden="true">→</span></a><a class="btn btn-ghost" href="sample-tasks.html">See sample tasks</a></div>
+<div class="done-main">
+<div class="done-seal" aria-hidden="true"><svg viewBox="0 0 24 24" width="28" height="28"><path pathLength="1" d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+<span class="eyebrow" style="--i:0">Application received</span>
+<h2 id="done-title" style="--i:1">Thanks, <span class="done-n"><span id="done-name">there</span><span class="dot on"></span></span></h2>
+<p style="--i:2">We sent a confirmation to <b id="done-email"></b>. Our team reviews every application and will email you about next steps.</p>
+<div class="done-acts" style="--i:3"><a class="btn btn-verd" data-social="discord" href="https://discord.gg/FX8hXUmCE">Join our Discord <span class="arr" aria-hidden="true">→</span></a><a class="btn btn-ink" href="index.html">Back to home <span class="arr" aria-hidden="true">→</span></a><a class="btn btn-ghost" href="sample-tasks.html">See sample tasks</a></div>
+</div>
+<div class="done-next"><span class="eyebrow">What happens next</span>
+<ol class="done-steps">
+<li class="ok" style="--i:0"><i aria-hidden="true"></i><div><b>Confirmation sent</b><span>Check your inbox. If it isn't there, look in spam.</span></div></li>
+<li class="now" style="--i:1"><i aria-hidden="true"></i><div><b>Team review</b><span>We read your profile and resume.</span></div></li>
+<li style="--i:2"><i aria-hidden="true"></i><div><b>Assessment</b><span>Shortlisted applicants take a two-part timed assessment.</span></div></li>
+</ol>
+<p class="done-help">Questions? Email <a data-email="general" href="#"></a>.</p>
+</div>
 </section>
 </div>
 </main>''' + footer(''))

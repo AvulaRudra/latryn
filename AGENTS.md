@@ -1,6 +1,5 @@
 # AGENTS.md
 
-
 Instructions for AI coding agents (and humans) working on the Latryn website. Read this before editing anything.
 
 ## Project overview
