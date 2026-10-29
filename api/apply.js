@@ -109,11 +109,13 @@ async function finish(c, a, ticket) {
   catch (e) { fail("We didn't receive your resume. Please submit the form again."); }
   if (item.size !== t.size) fail("Your resume didn't upload completely. Please submit the form again.");
 
+  /* the resume link is a plain URL, not a =HYPERLINK formula: a formula in a table column becomes a
+     calculated column, and Excel then rewrites every row with the newest formula */
   await graph(c, "POST", `/users/${enc(c.user)}/drive/root:/${encPath(c.workbook)}:/workbook/tables/${enc(c.table)}/rows/add`, {
     values: [[
       stamp(c.timeZone), safe(a.firstName), safe(a.lastName), safe(a.email), "'" + a.phone, a.qualification,
       a.specialization, a.stream, a.work.join(", "), a.availability, safe(a.portfolio),
-      `=HYPERLINK("${String(item.webUrl).replace(/"/g, "%22")}","${t.name}")`, safe(a.role), "New"
+      String(item.webUrl), safe(a.role), "New"
     ]]
   });
 
