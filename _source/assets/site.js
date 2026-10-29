@@ -197,7 +197,29 @@ window.LATRYN = {
       if (name === "resume") return fileIn.files.length > 0;
       return !!apply.elements[name].value.trim();
     }
+    var LEFT = { firstName: "first name", lastName: "last name", email: "email", phone: "phone", qualification: "qualification", stream: "stream", specialization: "specialization", availability: "availability", work: "type of work", resume: "resume", portfolio: "portfolio link" };
+    var note = document.getElementById("apply-note"), noteDefault = note.innerHTML;
+    function valid(name) {
+      if (!filled(name)) return false;
+      var v = name === "resume" ? "" : name === "work" ? "" : apply.elements[name].value.trim();
+      if (name === "email") return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+      if (name === "phone") return /^[0-9]{10}$/.test(v);
+      if (name === "resume") { var f = fileIn.files[0]; return EXT.test(f.name) && f.size <= MAX; }
+      return true;
+    }
+    function ready() {
+      var left = required.concat(["work", "resume"]).filter(function (n) { return !valid(n); });
+      var pv = apply.elements.portfolio.value.trim();
+      if (pv && !/^https?:\/\/\S+\.\S+/i.test(pv)) left.push("portfolio");
+      var was = btn.getAttribute("aria-disabled") === "true";
+      btn.setAttribute("aria-disabled", left.length ? "true" : "false");
+      if (!left.length && was && !reduce) { btn.classList.remove("ready"); void btn.offsetWidth; btn.classList.add("ready"); }
+      note.innerHTML = left.length ? "" : noteDefault;
+      if (left.length) note.textContent = "To submit, complete: " + left.slice(0, 3).map(function (n) { return LEFT[n]; }).join(", ") + (left.length > 3 ? " and " + (left.length - 3) + " more" : "") + ".";
+      return !left.length;
+    }
     function progress() {
+      ready();
       var all = required.concat(["work", "resume"]), n = all.filter(filled).length, pct = Math.round(n / all.length * 100);
       if (meterBar) meterBar.style.transform = "scaleX(" + n / all.length + ")";
       if (meterN) meterN.textContent = pct + "%";
@@ -251,14 +273,37 @@ window.LATRYN = {
         .then(function (r) { if (!r.ok) { var e = new Error(r.error || "Something went wrong. Please try again."); e.user = true; throw e; } return r; });
     }
     /* the resume goes straight to the OneDrive upload URL the server opened, in one request (OneDrive accepts up to 60 MB) */
-    function upload(url, f) {
-      return fetch(url, { method: "PUT", headers: { "Content-Range": "bytes 0-" + (f.size - 1) + "/" + f.size }, body: f })
-        .then(function (r) { if (!r.ok) { var e = new Error("Your resume didn't upload. Please try again."); e.user = true; throw e; } });
+    function upload(url, f, onPct) {
+      return new Promise(function (res, rej) {
+        var x = new XMLHttpRequest();
+        x.open("PUT", url);
+        x.setRequestHeader("Content-Range", "bytes 0-" + (f.size - 1) + "/" + f.size);
+        x.upload.onprogress = function (e) { if (e.lengthComputable) onPct(e.loaded / e.total); };
+        x.onload = function () { if (x.status >= 200 && x.status < 300) { onPct(1); res(); } else bad(); };
+        x.onerror = bad;
+        function bad() { var e = new Error("Your resume didn't upload. Please try again."); e.user = true; rej(e); }
+        x.send(f);
+      });
+    }
+    /* sending: the button names the stage, the resume card shows the upload filling up */
+    var stageEl = null, pctEl = null;
+    function stage(text, pct) {
+      if (stageEl) stageEl.textContent = text;
+      if (pct != null) { drop.style.setProperty("--p", pct); if (pctEl) pctEl.textContent = Math.round(pct * 100) + "%"; }
     }
     function busy(on) {
-      btn.disabled = on;
-      if (on) { btn.dataset.label = btn.innerHTML; btn.innerHTML = '<span class="spin" aria-hidden="true"></span> Sending application'; }
-      else if (btn.dataset.label) { btn.innerHTML = btn.dataset.label; delete btn.dataset.label; }
+      btn.disabled = on; apply.classList.toggle("sending", on);
+      if (on) {
+        btn.dataset.label = btn.innerHTML;
+        btn.innerHTML = '<span class="spin" aria-hidden="true"></span> <span class="stage">Checking your details</span>';
+        stageEl = btn.querySelector(".stage");
+        drop.classList.add("up"); drop.style.setProperty("--p", 0);
+        var bar = document.createElement("span"); bar.className = "drop-up"; bar.setAttribute("aria-hidden", "true");
+        bar.innerHTML = "<i></i><em>0%</em>"; drop.appendChild(bar); pctEl = bar.querySelector("em");
+      } else {
+        if (btn.dataset.label) { btn.innerHTML = btn.dataset.label; delete btn.dataset.label; }
+        drop.classList.remove("up", "sent"); var b = drop.querySelector(".drop-up"); if (b) b.remove(); stageEl = pctEl = null;
+      }
     }
     function fail(text) { msg.textContent = text; msg.hidden = false; }
     function done(data) {
@@ -299,7 +344,13 @@ window.LATRYN = {
       busy(true);
       post(Object.assign({ action: "start", resume: { name: file.name, size: file.size } }, data)).then(function (r) {
         if (!r.uploadUrl) return r;
-        return upload(r.uploadUrl, file).then(function () { return post(Object.assign({ action: "finish", ticket: r.ticket }, data)); });
+        stage("Uploading resume", 0);
+        return upload(r.uploadUrl, file, function (p) { stage("Uploading resume", p); }).then(function () {
+          drop.classList.add("sent"); stage("Saving your application");
+          return post(Object.assign({ action: "finish", ticket: r.ticket }, data));
+        });
+      }).then(function () {
+        stage("Sent"); return new Promise(function (r) { setTimeout(r, reduce ? 0 : 450); });
       }).then(function () {
         busy(false); done(data);
       }).catch(function (err) {
