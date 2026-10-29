@@ -288,11 +288,21 @@ def apply_page():
 <p class="form-msg" id="apply-msg" role="alert" hidden></p>
 </form>
 <section class="apply-done" id="apply-done" hidden tabindex="-1" aria-labelledby="done-title">
-<span class="stamp" aria-hidden="true"></span>
-<span class="eyebrow">Application received</span>
-<h2 id="done-title">Thanks, <span id="done-name">there</span><span class="dot on"></span></h2>
-<p>We sent a confirmation to <b id="done-email"></b>. Our team reviews every application and will email you about next steps.</p>
-<div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn btn-ink" href="index.html">Back to home <span class="arr" aria-hidden="true">→</span></a><a class="btn btn-verd" data-social="discord" href="https://discord.gg/FX8hXUmCE">Join our Discord <span class="arr" aria-hidden="true">→</span></a><a class="btn btn-ghost" href="sample-tasks.html">See sample tasks</a></div>
+<div class="done-main">
+<div class="done-seal" aria-hidden="true"><svg viewBox="0 0 24 24" width="28" height="28"><path pathLength="1" d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+<span class="eyebrow" style="--i:0">Application received</span>
+<h2 id="done-title" style="--i:1">Thanks, <span class="done-n"><span id="done-name">there</span><span class="dot on"></span></span></h2>
+<p style="--i:2">We sent a confirmation to <b id="done-email"></b>. Our team reviews every application and will email you about next steps.</p>
+<div class="done-acts" style="--i:3"><a class="btn btn-verd" data-social="discord" href="https://discord.gg/FX8hXUmCE">Join our Discord <span class="arr" aria-hidden="true">→</span></a><a class="btn btn-ink" href="index.html">Back to home <span class="arr" aria-hidden="true">→</span></a><a class="btn btn-ghost" href="sample-tasks.html">See sample tasks</a></div>
+</div>
+<div class="done-next"><span class="eyebrow">What happens next</span>
+<ol class="done-steps">
+<li class="ok" style="--i:0"><i aria-hidden="true"></i><div><b>Confirmation sent</b><span>Check your inbox. If it isn't there, look in spam.</span></div></li>
+<li class="now" style="--i:1"><i aria-hidden="true"></i><div><b>Team review</b><span>We read your profile and resume.</span></div></li>
+<li style="--i:2"><i aria-hidden="true"></i><div><b>Assessment</b><span>Shortlisted applicants take a two-part timed assessment.</span></div></li>
+</ol>
+<p class="done-help">Questions? Email <a data-email="general" href="#"></a>.</p>
+</div>
 </section>
 </div>
 </main>''' + footer(''))
