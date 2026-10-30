@@ -308,7 +308,6 @@ window.LATRYN = {
     function fail(text) { msg.textContent = text; msg.hidden = false; }
     function done(data) {
       document.getElementById("done-name").textContent = data.firstName;
-      document.getElementById("done-email").textContent = data.email;
       var d = document.getElementById("apply-done"); apply.hidden = true; d.hidden = false;
       document.querySelector(".apply-side").hidden = true; document.querySelector(".apply-grid").classList.add("is-done");
       scrollToEl(document.querySelector(".page-hero"), false);
